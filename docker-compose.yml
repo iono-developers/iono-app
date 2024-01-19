@@ -3,21 +3,23 @@ version: '3.8'
 services:
 
   backend:
-    container_name: backend
+    container_name: backend_container
     build: ./backend
     volumes:
-      - ./backend/main:/app
+      - ./backend/main:/app/backend
     ports:
       - 8000:8000
     image: app:backend
     command: python manage.py runserver 0.0.0.0:8000
 
-  #frontend:
-  #  container_name: frontend
-  #  build: ./frontend
-  #  volumes:
-  #    - ./frontend:/app/frontend
-  #  ports:
-  #    - 5000:5000
-  #  image: app:frontend
-  #  command: npm run build
+  frontend:
+    container_name: frontend_container
+    build: ./frontend
+    volumes:
+      - ./frontend/main:/app/frontend
+    ports:
+      - 3000:3000
+    image: app:frontend
+    command: npm start
+    stdin_open: true
+    tty: true
