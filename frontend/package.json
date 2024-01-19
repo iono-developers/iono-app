@@ -5,7 +5,8 @@
     "serve": "^14.2.1"
   },
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "start": "node server.js"
   },
   "name": "frontend",
   "version": "1.0.0",
