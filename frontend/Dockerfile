@@ -1,32 +1,24 @@
-# The first instruction is what image we want to base our container on
-# We Use an alpine version of docker cause consists in a 
-# minimal Linux version (with node js)
-FROM node:20-alpine
+# Stage 1: Build the application
+FROM node:14-alpine as build
 
-# Set the working directory to /app/frontend
-# NOTE: all the directives that follow in the Dockerfile will be executed in
-# that directory (I tried to separate backend from frontend)
 WORKDIR /app/frontend
 
-# Copy the package.json to the working directory
-# I need to install first the packages from npm
 COPY /main/package.json .
 COPY /main/package-lock.json .
 
-# Install npm packages
 RUN npm install
 
-# Install react
-RUN npm install react-dom react
-
-# Now I can copy the entire project in the workdir
 COPY . .
 
-# Install serve to show a static page
-RUN npm install -g serve
+RUN npm run build
 
-# The server will run on 127.0.0.1:3000
+# Stage 2: Create a smaller image for runtime
+FROM node:14-alpine
+
+WORKDIR /app/frontend
+
+COPY --from=build /app/frontend/build ./build
+
 EXPOSE 3000
 
-# Create the build and run it with serve
-CMD npm run build && serve -s build
+CMD ["npx", "serve", "-s", "build"]
