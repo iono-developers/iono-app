@@ -1,10 +1,11 @@
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
+from rest_framework import generics
+from .models import Event, Notification
+from .serializers import EventSerializer, NotificationSerializer
 
-# Create your views here.
+class EventListCreateView(generics.ListCreateAPIView):
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
 
-@api_view(['GET'])
-def test_api(request):
-    print('entrato')
-    return Response({'success' : True})
-
+class NotificationListCreateView(generics.ListCreateAPIView):
+    queryset = Notification.objects.all()
+    serializer_class = NotificationSerializer
