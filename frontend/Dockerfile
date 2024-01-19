@@ -13,7 +13,7 @@ COPY . .
 RUN npm run build
 
 # Stage 2: Create a smaller image for runtime
-FROM node:14-alpine
+FROM node:20-alpine
 
 WORKDIR /app/frontend
 
