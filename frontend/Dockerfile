@@ -17,7 +17,7 @@ COPY /main/package-lock.json .
 RUN npm install
 
 # Install react
-RUN npm install -g react-scripts
+RUN npm install react-dom react
 
 # Now I can copy the entire project in the workdir
 COPY . .
