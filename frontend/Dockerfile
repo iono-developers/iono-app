@@ -11,12 +11,16 @@ WORKDIR /app/frontend
 # Copy the package.json to the working directory
 # I need to install first the packages from npm
 COPY /main/package.json .
+COPY /main/package-lock.json .
 
 # Install npm packages
 RUN npm install
 
 # Now I can copy the entire project in the workdir
 COPY . .
+
+# Install serve to show a static page
+RUN npm install -g serve
 
 # The server will run on 127.0.0.1:3000
 EXPOSE 3000
