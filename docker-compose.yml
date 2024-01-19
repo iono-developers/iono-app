@@ -1,17 +1,26 @@
+# Specifies which syntax version of Docker compose
 version: '3.8'
 
+# Build a multiservice arhitecture.
 services:
 
+  # Create a service called backend (Django)
   backend:
     container_name: backend_container
+    # Build an image from the files in the ./backend directory 
+    # (search for the Dockerfile)
     build: ./backend
+    # Mount the container `/backend/main` folder to the a `/app/backend` folder in the location
+    # of the Dockerfile on the host machine.
     volumes:
       - ./backend/main:/app/backend
+    # Map port 8000 to port 8000 so that we can access the application on
+    # our host machine by visiting 127.0.0.1:8000
     ports:
       - 8000:8000
     image: app:backend
-    command: python manage.py runserver 0.0.0.0:8000
-
+  
+  # Create a service called frontend (React)
   frontend:
     container_name: frontend_container
     build: ./frontend
@@ -20,6 +29,5 @@ services:
     ports:
       - 3000:3000
     image: app:frontend
-    command: npm start
     stdin_open: true
     tty: true
