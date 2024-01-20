@@ -4,14 +4,18 @@ from django.contrib.auth.models import User
 class Event(models.Model):
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
-    description = models.TextField()
-    photo = models.ImageField(upload_to='event_photos/', null=True, blank=True)
-    timer = models.DateTimeField()
-    invited_friends = models.ManyToManyField(User, related_name='invited_friends', blank=True)
-    responded_friends = models.ManyToManyField(User, related_name='responded_friends', blank=True)
-    winner = models.ForeignKey(User, related_name='winner', null=True, blank=True, on_delete=models.CASCADE)
+    description = models.TextField(blank=True)
+    photo = models.ImageField(upload_to='photos/', blank=True)
+    expiration_time = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
-class Notification(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+class Invite(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
-    is_read = models.BooleanField(default=False)
+    invitee = models.ForeignKey(User, on_delete=models.CASCADE)
+    rejected = models.BooleanField(default=False)
+    rejected_at = models.DateTimeField(null=True, blank=True)
+
+class Loser(models.Model):
+    event = models.OneToOneField(Event, on_delete=models.CASCADE)
+    selected_user = models.ForeignKey(User, on_delete=models.CASCADE)
+    selected_at = models.DateTimeField(auto_now_add=True)
