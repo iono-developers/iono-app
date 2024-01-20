@@ -58,6 +58,23 @@ class AuthenticationTests(TestCase):
         }
         response = self.client.post('/users/token/', data=dumb_data)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+    
+    
+    def test_login_with_another_user_password(self):
+        # Test if login with correct name and wrong password
+        dumb_data = {
+            'username' : 'firstuser',
+            'password' : 'seconduserpassword'
+        }
+        response = self.client.post('/users/token/', data=dumb_data)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+    
+    
+    def test_login_with_empty_data(self):
+        # Test if login with correct name and wrong password
+        dumb_data = {}
+        response = self.client.post('/users/token/', data=dumb_data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     
     def test_token_creation(self):
@@ -85,6 +102,24 @@ class AuthenticationTests(TestCase):
         self.assertIn('access', response.data)
         new_access_token = response.data['access']
         self.assertNotEqual(access_token, new_access_token)
+
+    
+    def test_expired_token_refresh(self):
+        # Obtain an initial token
+        response = self.client.post('/users/token/', data=self.first_user_data)
+        access_token = response.data['access']
+        refresh_token = response.data['refresh']
+
+        # Test if a new access token is generated when refreshing with a valid refresh token
+        response = self.client.post('/users/token/refresh/', data = {'refresh': refresh_token})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('access', response.data)
+        new_access_token = response.data['access']
+        self.assertNotEqual(access_token, new_access_token)
+        
+        # Test if the expired token return the correct status
+        response = self.client.post('/users/token/refresh/', data = {'refresh': refresh_token})
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
     def test_logout(self):

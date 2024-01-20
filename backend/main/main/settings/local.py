@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -43,9 +44,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
     'rest_framework',
     
     'events',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -134,3 +138,28 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Ugly
 # We need to find another solution for timezone
 USE_TZ = False
+
+# Set our database CustomUser as the default User model
+AUTH_USER_MODEL = 'users.CustomUser'
+
+# REST default authentication class -> Token simplejwt
+REST_FRAMEWORK = {
+     'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+      ],
+}
+
+# SIMPLE_JWT options
+SIMPLE_JWT = {
+     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
+     'REFRESH_TOKEN_LIFETIME': timedelta(days=10),
+     'ROTATE_REFRESH_TOKENS': True,
+     'BLACKLIST_AFTER_ROTATION': True
+}
+
+CSRF_COOKIE_SECURE = False  # Set to True for production if using HTTPS
+CSRF_USE_SESSIONS = True
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
