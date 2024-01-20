@@ -1,8 +1,11 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+
+CustomUser = get_user_model()
+
 
 class Event(models.Model):
-    creator = models.ForeignKey(User, on_delete=models.CASCADE)
+    creator = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True)
     photo = models.ImageField(upload_to='photos/', blank=True)
@@ -11,11 +14,11 @@ class Event(models.Model):
 
 class Invite(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
-    invitee = models.ForeignKey(User, on_delete=models.CASCADE)
+    invitee = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     rejected = models.BooleanField(default=False)
     rejected_at = models.DateTimeField(null=True, blank=True)
 
 class Loser(models.Model):
     event = models.OneToOneField(Event, on_delete=models.CASCADE)
-    selected_user = models.ForeignKey(User, on_delete=models.CASCADE)
+    selected_user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     selected_at = models.DateTimeField(auto_now_add=True)
