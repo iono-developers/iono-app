@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }) => {
     const loginUser = async (e) => {
         e.preventDefault();
         try {
-            const { status, data } = await axios.post("/users/token/", {
+            const { status, data } = await axios.post("/auth/token/", {
                 'username': e.target.username.value,
                 'password': e.target.password.value
             });
@@ -89,7 +89,7 @@ export const AuthProvider = ({ children }) => {
     // Function to update authentication token using Axios
     const updateToken = async () => {
         try {
-            const response = await axios.post("/users/token/refresh/", {
+            const response = await axios.post("/auth/token/refresh/", {
                 'refresh': authTokens?.refresh
             });
 
@@ -136,7 +136,7 @@ export const AuthProvider = ({ children }) => {
         // Cleanup interval on component unmount
         return () => clearInterval(interval);
 
-    }, [authTokens, loading, updateToken]);
+    }, [authTokens, loading]);
 
     // Render the AuthContext.Provider with the contextData
     return (
