@@ -1,5 +1,5 @@
 from django.test import TestCase
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.utils import timezone
 from .models import Event, Invite, Loser
 
@@ -7,7 +7,7 @@ from .models import Event, Invite, Loser
 class EventModelTest(TestCase):
     def setUp(self):
         # Create a test user
-        self.user = User.objects.create_user(username='testuser', password='testpass')
+        self.user = get_user_model().objects.create_user(username='testuser1', email='testuser1@mail.it', password='testpass1')
         # Create a test event
         self.event = Event.objects.create(
             creator=self.user,
@@ -26,7 +26,7 @@ class EventModelTest(TestCase):
 class InviteModelTest(TestCase):
     def setUp(self):
         # Create a test user
-        self.user = User.objects.create_user(username='testuser', password='testpass')
+        self.user = get_user_model().objects.create_user(username='testuser1', email='testuser1@mail.it', password='testpass1')
         # Create a test event
         self.event = Event.objects.create(
             creator=self.user,
@@ -35,7 +35,7 @@ class InviteModelTest(TestCase):
             expiration_time=timezone.now(),
         )
         # Create a test invitee user
-        self.invitee = User.objects.create_user(username='inviteeuser', password='testpass')
+        self.invitee = get_user_model().objects.create_user(username='testuser2', email='testuser2@mail.it', password='testpass2')
         # Create a test invite
         self.invite = Invite.objects.create(event=self.event, invitee=self.invitee)
 
@@ -59,7 +59,7 @@ class InviteModelTest(TestCase):
 class LoserModelTest(TestCase):
     def setUp(self):
         # Create a test user
-        self.user = User.objects.create_user(username='testuser', password='testpass')
+        self.user = get_user_model().objects.create_user(username='testuser', email='testuser@mail.it', password='testpass')
         # Create a test event
         self.event = Event.objects.create(
             creator=self.user,
