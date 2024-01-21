@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'corsheaders',
     
     'events',
-    'users',
+    'authentication',
 ]
 
 MIDDLEWARE = [
@@ -142,7 +142,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 USE_TZ = False
 
 # Set our database User as the default User model
-AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = 'authentication.User'
 
 # REST default authentication class -> Token simplejwt
 REST_FRAMEWORK = {

@@ -46,7 +46,7 @@ class AuthenticationTests(TestCase):
             'username' : 'fakeuser',
             'password' : 'fakeuserpassword'
         }
-        response = self.client.post('/users/token/', data=dumb_data)
+        response = self.client.post('/auth/token/', data=dumb_data)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
     
     
@@ -56,7 +56,7 @@ class AuthenticationTests(TestCase):
             'username' : 'firstuser',
             'password' : 'wrongpassword'
         }
-        response = self.client.post('/users/token/', data=dumb_data)
+        response = self.client.post('/auth/token/', data=dumb_data)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
     
     
@@ -66,38 +66,38 @@ class AuthenticationTests(TestCase):
             'username' : 'firstuser',
             'password' : 'seconduserpassword'
         }
-        response = self.client.post('/users/token/', data=dumb_data)
+        response = self.client.post('/auth/token/', data=dumb_data)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
     
     
     def test_login_with_empty_data(self):
         # Test if login with correct name and wrong password
         dumb_data = {}
-        response = self.client.post('/users/token/', data=dumb_data)
+        response = self.client.post('/auth/token/', data=dumb_data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     
     def test_token_creation(self):
         # Test if a valid token is generated when providing correct credentials
-        response = self.client.post('/users/token/', data=self.first_user_data)
+        response = self.client.post('/auth/token/', data=self.first_user_data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('access', response.data)
         self.assertIn('refresh', response.data)
         
         # Double check token validity
         access_token = response.data['access']
-        response = self.client.post('/users/token/verify/', data = {'token': access_token})
+        response = self.client.post('/auth/token/verify/', data = {'token': access_token})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 
     def test_token_refresh(self):
         # Obtain an initial token
-        response = self.client.post('/users/token/', data=self.first_user_data)
+        response = self.client.post('/auth/token/', data=self.first_user_data)
         access_token = response.data['access']
         refresh_token = response.data['refresh']
 
         # Test if a new access token is generated when refreshing with a valid refresh token
-        response = self.client.post('/users/token/refresh/', data = {'refresh': refresh_token})
+        response = self.client.post('/auth/token/refresh/', data = {'refresh': refresh_token})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('access', response.data)
         new_access_token = response.data['access']
@@ -106,36 +106,36 @@ class AuthenticationTests(TestCase):
     
     def test_expired_token_refresh(self):
         # Obtain an initial token
-        response = self.client.post('/users/token/', data=self.first_user_data)
+        response = self.client.post('/auth/token/', data=self.first_user_data)
         access_token = response.data['access']
         refresh_token = response.data['refresh']
 
         # Test if a new access token is generated when refreshing with a valid refresh token
-        response = self.client.post('/users/token/refresh/', data = {'refresh': refresh_token})
+        response = self.client.post('/auth/token/refresh/', data = {'refresh': refresh_token})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('access', response.data)
         new_access_token = response.data['access']
         self.assertNotEqual(access_token, new_access_token)
         
         # Test if the expired token return the correct status
-        response = self.client.post('/users/token/refresh/', data = {'refresh': refresh_token})
+        response = self.client.post('/auth/token/refresh/', data = {'refresh': refresh_token})
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
     def test_logout(self):
         # Obtain an initial token
-        response = self.client.post('/users/token/', data=self.first_user_data)
+        response = self.client.post('/auth/token/', data=self.first_user_data)
         refresh_token = response.data['refresh']
         access_token = response.data['access']
 
         # Test if the refresh token is blacklisted upon logout
-        response = self.client.post('/users/logout/',
+        response = self.client.post('/auth/logout/',
                                     headers={'Authorization': 'Bearer ' + access_token},
                                     data={'refresh_token': refresh_token})
         self.assertEqual(response.status_code, status.HTTP_205_RESET_CONTENT)
 
         # Attempt to use the blacklisted refresh token for a new access token
-        response = self.client.post('/users/token/refresh/', data={'refresh': refresh_token})
+        response = self.client.post('/auth/token/refresh/', data={'refresh': refresh_token})
         
         # Check if the response indicates unauthorized access
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
@@ -147,17 +147,17 @@ class AuthenticationTests(TestCase):
 
     def test_invalid_logout_authentication(self):
         # Test if the server responds appropriately to an invalid logout request
-        response = self.client.post('/users/logout/', data={})
+        response = self.client.post('/auth/logout/', data={})
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
     
     
     def test_invalid_logout_refresh_token(self):
         # Obtain an initial token
-        response = self.client.post('/users/token/', data=self.first_user_data)
+        response = self.client.post('/auth/token/', data=self.first_user_data)
         access_token = response.data['access']
         
         # Test if the server responds appropriately to an invalid logout request
-        response = self.client.post('/users/logout/',
+        response = self.client.post('/auth/logout/',
                                     headers={'Authorization': 'Bearer ' + access_token},
                                     data={'refresh' : access_token})
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
