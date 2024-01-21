@@ -141,8 +141,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # We need to find another solution for timezone
 USE_TZ = False
 
-# Set our database CustomUser as the default User model
-AUTH_USER_MODEL = 'users.CustomUser'
+# Set our database User as the default User model
+AUTH_USER_MODEL = 'users.User'
 
 # REST default authentication class -> Token simplejwt
 REST_FRAMEWORK = {
