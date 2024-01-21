@@ -103,3 +103,13 @@ sudo docker-compose up --build
 **Frontend**: Open your web browser and go to http://localhost:3000
 
 **Backend**: Access the Django backend at http://localhost:8000
+
+
+# Running Tests
+To execute tests for this project, use the following command:
+
+```bash
+python manage.py test
+```
+
+This command will run the test suite and provide feedback on the status of your project's functionality. Ensure that you have set up your environment and dependencies correctly before running the tests.
