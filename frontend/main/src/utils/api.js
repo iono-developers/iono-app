@@ -1,4 +1,4 @@
-// /src/utils/api.js
+// api.js
 
 // Import the Axios library for making HTTP requests
 import axios from 'axios';
@@ -9,6 +9,7 @@ const API_BASE_URL = 'http://localhost:8000';
 // Create an Axios instance with the base URL and default headers
 const api = axios.create({
   baseURL: API_BASE_URL,
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },

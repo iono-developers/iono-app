@@ -1,9 +1,9 @@
 import { Routes, Route, BrowserRouter as Router } from 'react-router-dom';
-import './App.css';
-import Login from './components/Login';
-import { AuthProvider } from './contexts/AuthContext';
+import Login from './components/Auth/Login';
+import { AuthProvider } from './context/AuthContext';
 import PrivateRoute from './utils/PrivateRoute';
 import CreateEvent from './pages/CreateEvent';
+import EventDetails from './components/Event/EventDetails';
 
 function App() {
   return (
@@ -11,10 +11,13 @@ function App() {
       <Router>
         <AuthProvider>
           <Routes>
-            <Route exact path="/" element={<PrivateRoute />}>
-              <Route exact path="/" element={<CreateEvent />} />
-            </Route>
+
             <Route path="/login" element={<Login />} />
+
+            <Route exact path='/' element={<PrivateRoute />}>
+              <Route exact path='/events/:eventId' element={<EventDetails />} />
+            </Route>
+
           </Routes>
         </AuthProvider>
       </Router>

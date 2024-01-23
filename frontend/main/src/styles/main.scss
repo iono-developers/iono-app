@@ -1,0 +1,68 @@
+// main.scss
+
+// Global styles
+
+// Reset default margin and padding
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  // Set a default font family
+  body {
+    font-family: 'Arial', sans-serif;
+  }
+  
+  // Set a global background color
+  body {
+    background-color: #f4f4f4;
+  }
+  
+  // Add some styling to headings
+  h1, h2, h3, h4, h5, h6 {
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  // Add styling to paragraphs
+  p {
+    line-height: 1.6;
+    color: #666;
+    margin-bottom: 15px;
+  }
+  
+  // Add styling to buttons
+  button {
+    cursor: pointer;
+    padding: 10px 15px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+  
+  // Add styling to input fields
+  input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  // Add styling to links
+  a {
+    color: #007bff;
+    text-decoration: none;
+  
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  
