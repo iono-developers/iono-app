@@ -1,70 +1,81 @@
-# Getting Started with Create React App
+# React App Structure for "Io No" Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+To develop the "Io No" application in React, you can follow an organized structure to manage different parts of the app. Below is a suggested breakdown into components and folders for the frontend. Remember, this is just a general guide, and you can customize it based on your needs and development style.
 
-## Available Scripts
+# Basic Structure:
 
-In the project directory, you can run:
+```
+/src
+|-- /components
+|   |-- /Auth
+|   |   |-- LoginForm.jsx
+|   |   |-- RegistrationForm.jsx
+|   |
+|   |-- /Event
+|   |   |-- EventForm.jsx
+|   |   |-- InviteFriendsForm.jsx
+|   |   |-- EventDetails.jsx
+|   |
+|   |-- /Notification
+|   |   |-- NotificationList.jsx
+|   |   |-- NotificationItem.jsx
+|   |
+|   |-- /User
+|       |-- UserProfile.jsx
+|       |-- UserFriendsList.jsx
+|
+|-- /context
+|   |-- AuthContext.jsx
+|   |-- EventContext.jsx
+|
+|-- /services
+|   |-- AuthService.js
+|   |-- EventService.js
+|   |-- NotificationService.js
+|
+|-- /utils
+|   |-- api.js
+|   |-- helpers.js
+|
+|-- /styles
+|   |-- main.scss
+|
+|-- App.jsx
+|-- index.jsx
+|-- Routes.jsx
+|-- config.js
+```
 
-### `npm start`
+# Explanation:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **components:** Contains React components. The subdivision is based on the functional logic of the application.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+  - **/Auth:** Manages authentication features such as login and registration.
+  - **/Event:** Manages the creation and handling of events.
+  - **/Notification:** Manages event notifications.
+  - **/User:** Manages user profile display and friends list.
 
-### `npm test`
+- **context:** Contains React contexts for managing the global state of the application.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+  - **AuthContext.jsx:** Context for handling authentication state.
+  - **EventContext.jsx:** Context for managing events and notifications.
 
-### `npm run build`
+- **services:** Contains services that handle communication with the backend.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+  - **AuthService.js:** Service for authentication operations.
+  - **EventService.js:** Service for event operations.
+  - **NotificationService.js:** Service for notifications.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **utils:** Contains utility files.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+  - **api.js:** Manages API calls to the backend.
+  - **helpers.js:** Contains generic utility functions.
 
-### `npm run eject`
+- **styles:** Contains global style files.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+  - **main.scss:** Main file for styles.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- **App.jsx:** Main component that contains the app layout.
+- **index.jsx:** App React startup file.
+- **Routes.jsx:** Manages application routes.
+- **config.js:** General app configuration.
