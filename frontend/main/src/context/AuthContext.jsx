@@ -36,12 +36,15 @@ import axios from 'axios';
 import {
     getAuthTokens,
     getUserAuthToken,
+    getIdAuthToken,
     saveAuthTokens,
     removeAuthTokens
-} from '../utils/authentication';
+}
+
+    from '../utils/authentication';
+
 
 const AuthContext = createContext();
-
 export default AuthContext;
 
 export const AuthProvider = ({ children }) => {
@@ -49,6 +52,8 @@ export const AuthProvider = ({ children }) => {
     const [authTokens, setAuthTokens] = useState(() => getAuthTokens());
     // State for username data: From the authTokens obtain the username if available
     const [username, setUsername] = useState(() => getUserAuthToken(authTokens?.access));
+    // State for user_id data: From the authTokens obtain the user_id if available
+    const [user_id, setUserId] = useState(() => getIdAuthToken(authTokens?.access));
     // State for loading status
     const [loading, setLoading] = useState(true);
     // React Router navigate function
@@ -63,8 +68,10 @@ export const AuthProvider = ({ children }) => {
                 'password': e.target.password.value
             });
 
+            // Successful Login
             if (status === 200) {
                 setAuthTokens(data);
+                setUserId(getIdAuthToken(data.access));
                 setUsername(getUserAuthToken(data.access));
                 saveAuthTokens(data);
                 navigate('/');
@@ -81,6 +88,7 @@ export const AuthProvider = ({ children }) => {
     // Function to log out the user
     const logoutUser = () => {
         setAuthTokens(null);
+        setUserId(null)
         setUsername(null);
         removeAuthTokens();
         navigate('/login');
@@ -94,9 +102,11 @@ export const AuthProvider = ({ children }) => {
             });
 
             const { status, data } = response;
-
+            
+            // User has the correct Token, we can update it
             if (status === 200) {
                 setAuthTokens(data);
+                setUserId(getIdAuthToken(data.access))
                 setUsername(getUserAuthToken(data.access));
                 saveAuthTokens(data);
             } else {
@@ -112,6 +122,7 @@ export const AuthProvider = ({ children }) => {
 
     // Context data object to be provided to consumers
     const contextData = {
+        user_id,
         username,
         authTokens,
         loginUser,
