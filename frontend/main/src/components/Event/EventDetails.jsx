@@ -56,19 +56,43 @@ const EventDetails = () => {
     return <p>Loading event details...</p>;
   }
 
+  // Check if the user has already responded to the invitation
+  const userResponse = eventDetails.invites.find(invite => invite.invitee_username === username);
+
   // Render the event details along with buttons for user response
   return (
-    <div>
-      <h2>{eventDetails.title}</h2>
-      <p>Date: {eventDetails.expiration_time}</p>
-      <p>Creator: {eventDetails.creator_username}</p>
-      <p>Description: {eventDetails.description}</p>
+    <div className="event-details-container">
+      <div className="event-header">
+        <h2>{eventDetails.title}</h2>
+        <p>Date: {eventDetails.expiration_time}</p>
+        <p>Creator: {eventDetails.creator_username}</p>
+      </div>
 
-      {/* Add other event details as needed */}
+      <div className="event-description">
+        <p>Description: {eventDetails.description}</p>
+      </div>
 
-      {/* Buttons for accepting and declining the event invitation */}
-      <button onClick={() => handleRespond('accept')}>Accept</button>
-      <button onClick={() => handleRespond('decline')}>Decline</button>
+      <div className="invitations-section">
+        <h3>Invitations:</h3>
+        <ul>
+          {eventDetails.invites.map(invite => (
+            <li key={invite.id}>
+              {invite.invitee_username} - {invite.rejected ? 'Declined' : 'Pending'}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="user-response-section">
+        {userResponse ? (
+          <p>Your response: {userResponse.rejected ? 'Declined' : 'Accepted'}</p>
+        ) : (
+          <div className="response-buttons">
+            <button onClick={() => handleRespond('accept')}>Accept</button>
+            <button onClick={() => handleRespond('decline')}>Decline</button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
