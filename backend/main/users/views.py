@@ -7,6 +7,7 @@ from .models import FriendRequest
 from .serializers import FriendRequestSerializer
 from django.contrib.auth import get_user_model
 
+
 class FriendRequestViewSet(viewsets.ModelViewSet):
     queryset = FriendRequest.objects.all()
     serializer_class = FriendRequestSerializer

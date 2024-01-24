@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.utils import timezone
 from .models import Event, Invite, Loser
 
+
 # Test cases for the Event model
 class EventModelTest(TestCase):
     def setUp(self):

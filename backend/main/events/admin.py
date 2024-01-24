@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import Event, Invite, Loser
 
+
 class InviteInline(admin.TabularInline):  # You can also use admin.StackedInline for a different display style
     model = Invite
     extra = 1  # Number of empty forms to display
