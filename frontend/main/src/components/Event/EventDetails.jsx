@@ -61,7 +61,7 @@ const EventDetails = () => {
     <div>
       <h2>{eventDetails.title}</h2>
       <p>Date: {eventDetails.expiration_time}</p>
-      <p>Creator: {eventDetails.creator}</p>
+      <p>Creator: {eventDetails.creator_username}</p>
       <p>Description: {eventDetails.description}</p>
 
       {/* Add other event details as needed */}
