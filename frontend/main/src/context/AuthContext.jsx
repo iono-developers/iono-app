@@ -41,7 +41,7 @@ import {
     removeAuthTokens
 }
 
-    from '../utils/authentication';
+from '../utils/authentication';
 
 
 const AuthContext = createContext();

@@ -1,8 +1,35 @@
-// EventService.js
-// This module handles communication with the backend server regarding events.
+/**
+ * EventService Module:
+ * 
+ * This module handles communication with the backend server regarding events.
+ * It encapsulates functions for retrieving event details, fetching the list of
+ * events, creating new events, and responding to event invitations.
+ * 
+ * Useful for:
+ * - Making HTTP requests to the server's '/events' endpoints for event-related operations.
+ * - Handling asynchronous operations related to events in a React application.
+ * - Encapsulating backend communication logic to keep it separate from components.
+ * 
+ * When to use:
+ * - Integrate this EventService module in components or services where you need
+ *   to interact with the server's '/events' endpoints for CRUD operations on events.
+ * - Ideal for applications with a backend that supports event-related operations.
+ * 
+ * Function Usage Comments:
+ * - getEventDetails: Retrieves details of a specific event by sending a GET request
+ *   to the '/events/:eventId' endpoint. Requires the eventId as a parameter.
+ * - getEvents: Retrieves the list of events by sending a GET request to the '/events' endpoint.
+ * - createEvent: Creates a new event by sending a POST request to the '/events' endpoint.
+ *   Requires eventData, containing the details of the new event, as a parameter.
+ * - respondToInvite: Responds to an event invitation by sending a POST request to the
+ *   '/events/:eventId/respond' endpoint. Requires eventId and response as parameters.
+ * - Exported as EventService: The entire EventService object is exported for use
+ *   in other parts of the application.
+ */
 
-// Import the API utility for making HTTP requests.
+
 import { get, post, put, del } from '../utils/api';
+
 
 const EventService = {
   // Function to retrieve a single event from the backend.
@@ -35,7 +62,7 @@ const EventService = {
   createEvent: async (eventData) => {
     try {
       // Send a POST request to the '/events' endpoint with the provided event data.
-      const response = await post('/events', eventData);
+      const response = await post('/events/', eventData);
       // Return the data received from the server, typically containing the newly created event details.
       return response.data;
     } catch (error) {

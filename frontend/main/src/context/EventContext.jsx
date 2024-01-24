@@ -1,10 +1,38 @@
-// EventContext.jsx
+/**
+ * EventContext Component:
+ * 
+ * This component serves as a context provider for managing event-related data
+ * within a React application. It utilizes the Context API to share event data
+ * and functions with components that need them.
+ * 
+ * Useful for:
+ * - Managing and sharing event-related state across multiple components.
+ * - Fetching and updating event data in a centralized location.
+ * - Utilizing the Context API to provide a consistent interface for components.
+ * 
+ * When to use:
+ * - Integrate this EventContext component at the top level of your React
+ *   application to manage event-related data throughout the app.
+ * - Ideal for applications with features that involve events, such as calendars,
+ *   schedules, or event-based interactions.
+ * 
+ * Function Usage Comments:
+ * - createContext: Creates a context object to store and share event-related data.
+ * - EventProvider: Wraps its children components, providing the event-related
+ *   context value, which includes the events state and potentially other
+ *   event-related values or functions.
+ * - useEffect: Fetches events from the server when the component mounts.
+ * - setEvents: Updates the state with the fetched events.
+ */
+
+
 import React, { createContext, useState, useEffect } from 'react';
+
 import EventService from '../services/EventService';
+
 
 // Create an event context
 const EventContext = createContext();
-
 export default EventContext;
 
 export const EventProvider = ({ children }) => {

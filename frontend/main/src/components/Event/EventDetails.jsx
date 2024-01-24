@@ -1,11 +1,42 @@
-// EventDetails.jsx
+/**
+ * EventDetails Component:
+ * 
+ * This component displays detailed information about a specific event, including
+ * its title, date, creator, description, and invitations. Users can respond to
+ * event invitations using the proper button. It utilizes the React Router for
+ * handling URL parameters and the AuthContext to check user authentication.
+ * 
+ * Useful for:
+ * - Displaying detailed information about an event, including its title, date,
+ *   creator, and description.
+ * - Allowing authenticated users to respond to event invitations.
+ * - Utilizing React Router for dynamic routing based on event ID in the URL.
+ * 
+ * When to use:
+ * - Integrate this EventDetails component within your React application to
+ *   showcase detailed event information and handle user responses.
+ * - Ideal for applications with event-based features, where users need to view
+ *   and respond to event invitations.
+ * 
+ * Function Usage Comments:
+ * - handleRespond: Handles user responses to event invitations. Calls the
+ *   EventService to respond to the invitation and updates local state.
+ * 
+ */
+
+
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+
 import EventService from '../../services/EventService';
 import AuthContext from '../../context/AuthContext';
+import Loading from '../Utils/Loading';
+
 import '../../styles/main.scss';
 
+
 const EventDetails = () => {
+  
   // Get the eventId from the URL parameters
   const { eventId } = useParams();
 
@@ -20,7 +51,6 @@ const EventDetails = () => {
     const fetchEventDetails = async () => {
       try {
         // Call the EventService to get details of the event using the eventId
-        console.log(eventId)
         const event = await EventService.getEventDetails(eventId);
 
         // Update the state with the retrieved event details
@@ -53,7 +83,7 @@ const EventDetails = () => {
 
   // If eventDetails is not available yet, show a loading message
   if (!eventDetails) {
-    return <p>Loading event details...</p>;
+    return <Loading/>;
   }
 
   // Check if the user has already responded to the invitation

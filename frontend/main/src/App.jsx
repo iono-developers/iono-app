@@ -4,7 +4,9 @@ import { AuthProvider } from './context/AuthContext';
 import { EventProvider } from './context/EventContext';
 import PrivateRoute from './utils/PrivateRoute';
 import EventDetails from './components/Event/EventDetails';
-import EventList from './pages/EventList';
+import EventList from './components/Event/EventList';
+import EventForm from './components/Event/EventForm';
+import Loading from './components/Utils/Loading';
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
 
               <Route exact path='/' element={<PrivateRoute />}>1
                 <Route exact path='' element={<EventList />} />
+                <Route exact path='/loading' element={<Loading />} />
+                <Route exact path='/create' element={<EventForm />} />
                 <Route exact path='/events/:eventId' element={<EventDetails />} />
               </Route>
 
