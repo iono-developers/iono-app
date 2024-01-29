@@ -3,12 +3,13 @@ FROM node:14-alpine as build
 
 WORKDIR /app/frontend
 
-COPY main/package-lock.json ./
+# Copy only the package files first to leverage Docker caching
+COPY ./frontend/main/package*.json ./
 
-COPY main/package.json ./
-
+# Install npm dependencies
 RUN npm install
 
-COPY . .
+# Copy the rest of the frontend application
+COPY ./frontend/main .
 
 CMD ["npm", "start"]
