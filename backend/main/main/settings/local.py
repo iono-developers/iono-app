@@ -174,5 +174,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
     "http://localhost:80",
     "http://127.0.0.1:80",
-    'http://45.147.250.158' #to move in production
+    "http://45.147.250.158", #to move in production
+    "http://45.147.250.158:80", #to move in production
+    "http://45.147.250.158:3000", #to move in production
 ]
