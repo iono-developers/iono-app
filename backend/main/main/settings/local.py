@@ -180,5 +180,4 @@ CORS_ALLOWED_ORIGINS = [
     "http://45.147.250.158:80", #to move in production
     "http://45.147.250.158:3000", #to move in production
     "http://45.147.250.158:8000",
-    "45.147.250.158:8000"
 ]
