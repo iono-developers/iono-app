@@ -9,6 +9,10 @@ RUN npm install
 
 COPY main/ .
 
-COPY main/node_modules ./node_modules
+# Add this line to copy only the necessary files for building
+COPY main/public ./public
+COPY main/src ./src
+COPY main/package-lock.json ./package-lock.json
+COPY main/package.json ./package.json
 
 CMD ["npm", "start"]
