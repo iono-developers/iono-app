@@ -5,6 +5,8 @@ WORKDIR /app/frontend
 
 COPY main/package*.json ./
 
+RUN npm cache clean --force
+
 RUN npm install
 
 COPY . .
