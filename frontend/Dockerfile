@@ -9,4 +9,6 @@ RUN npm install
 
 COPY main/ .
 
+COPY main/node_modules ./node_modules
+
 CMD ["npm", "start"]
