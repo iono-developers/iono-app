@@ -2,9 +2,10 @@
 
 // Import the Axios library for making HTTP requests
 import axios from 'axios';
+import BASE_URL from '../config';
 
 // Define the base URL for the API
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = BASE_URL;
 
 // Create an Axios instance with the base URL and default headers
 const api = axios.create({

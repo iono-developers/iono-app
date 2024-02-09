@@ -4,9 +4,10 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import axios from 'axios';
+import BASE_URL from './config';
 
 // Set the default base URL for all Axios requests
-axios.defaults.baseURL = 'http://localhost:8000';
+axios.defaults.baseURL = BASE_URL;
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
