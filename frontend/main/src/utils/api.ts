@@ -1,9 +1,7 @@
 // Import the Axios library for making HTTP requests
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
-import BASE_URL from '../config';
+import API_BASE_URL from '../config';
 
-// Define the base URL for the API
-const API_BASE_URL: string = BASE_URL;
 
 // Create an Axios instance with the base URL and default headers
 const api: AxiosInstance = axios.create({

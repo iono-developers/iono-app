@@ -1,8 +1,5 @@
 // config.ts
 
-require('dotenv').config();
+const API_BASE_URL: string = process.env.BASE_URL || '';
 
-// THIS IS FOR PRODUCTION
-const BASE_URL = process.env.BASE_URL;
-
-export default BASE_URL;
+export default API_BASE_URL;
