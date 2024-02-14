@@ -17,7 +17,7 @@ class LoserSerializer(serializers.ModelSerializer):
 
 class EventSerializer(serializers.ModelSerializer):
     creator_username = serializers.ReadOnlyField(source='creator.username')
-    created_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
+    created_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
     expiration_time = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
     invites = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     loser = LoserSerializer(read_only=True)
