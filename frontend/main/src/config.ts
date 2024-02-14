@@ -1,7 +1,8 @@
 // config.ts
 
+require('dotenv').config();
+
 // THIS IS FOR PRODUCTION
-// const BASE_URL = 'http://45.147.250.158:8000';
-const BASE_URL = 'http://127.0.0.1:8080';
+const BASE_URL = process.env.BASE_URL;
 
 export default BASE_URL;
