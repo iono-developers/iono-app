@@ -12,26 +12,27 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+from dotenv import load_dotenv
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Load environment variables from .env file
+load_dotenv()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = os.environ.get("SECRET_KEY")
-SECRET_KEY="django-insecure-bisn44m9%ge5qoa2b&3n9xr^b=b%jryfw-3w@a9jk*r(vdo9eq"
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = os.environ.get("DEBUG")
-DEBUG=1
+DEBUG = os.environ.get("DEBUG")
 
-#ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(",")
-ALLOWED_HOSTS= ["localhost", "127.0.0.1", "45.147.250.158"]
+
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(",")
 
 
 # Application definition
@@ -173,11 +174,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "http://127.0.0.1:8000",
-    "http://localhost:8000",
-    "http://localhost",
     "http://127.0.0.1",
-    "http://45.147.250.158", #to move in production
-    "http://45.147.250.158:80", #to move in production
-    "http://45.147.250.158:3000", #to move in production
-    "http://45.147.250.158:8000",
+    'http://127.0.0.1:8001'
 ]
