@@ -21,12 +21,17 @@
  * 
  */
 
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+interface EventDetails {
+  id: string;
+  title: string;
+  creator_username: string;
+  description: string;
+}
 
-const EventMini = ({ eventDetails }) => {
+const EventMini: React.FC<{ eventDetails: EventDetails | null }> = ({ eventDetails }) => {
   if (!eventDetails) {
     return null;
   }

@@ -1,4 +1,4 @@
-import { Routes, Route, BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Login from './components/Auth/Login';
 import { AuthProvider } from './context/AuthContext';
 import { EventProvider } from './context/EventContext';
@@ -14,18 +14,26 @@ function App() {
       <Router>
         <AuthProvider>
           <EventProvider>
-            <Routes>
-
-              <Route path="/login" element={<Login />} />
-
-              <Route exact path='/' element={<PrivateRoute />}>1
-                <Route exact path='' element={<EventList />} />
-                <Route exact path='/loading' element={<Loading />} />
-                <Route exact path='/create' element={<EventForm />} />
-                <Route exact path='/events/:eventId' element={<EventDetails />} />
+            <Switch>
+              <Route path="/login">
+                <Login />
               </Route>
 
-            </Routes>
+              <PrivateRoute>
+                <Route exact path=''>
+                  <EventList />
+                </Route>
+                <Route exact path='/loading'>
+                  <Loading />
+                </Route>
+                <Route exact path='/create'>
+                  <EventForm />
+                </Route>
+                <Route exact path='/events/:eventId'>
+                  <EventDetails />
+                </Route>
+              </PrivateRoute>
+            </Switch>
           </EventProvider>
         </AuthProvider>
       </Router>

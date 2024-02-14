@@ -30,53 +30,83 @@
  * 
  */
 
-import { createContext, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { createContext, useState, useEffect, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
-import {
+import { 
     getAuthTokens,
     getUserAuthToken,
     getIdAuthToken,
     saveAuthTokens,
-    removeAuthTokens
+    removeAuthTokens 
+} from '../utils/authentication';
+
+// Define the shape of the authentication tokens received from the server
+interface AuthTokens {
+    access?: string;
+    refresh?: string;
 }
 
-from '../utils/authentication';
+// Define the shape of the login response from the server
+interface LoginResponse {
+    access: string;
+    refresh: string;
+}
 
+// Define the shape of the token refresh response from the server
+interface TokenRefreshResponse {
+    access: string;
+}
 
-const AuthContext = createContext();
-export default AuthContext;
+// Define the shape of the authentication context data
+interface AuthContextData {
+    user_id: string | null;
+    username: string | null;
+    authTokens: AuthTokens | null;
+    loginUser: (username: string, password: string) => Promise<void>;
+    logoutUser: () => void;
+}
 
-export const AuthProvider = ({ children }) => {
+// Create the authentication context
+const AuthContext = createContext<AuthContextData | undefined>(undefined);
+
+// Custom hook to access the authentication context
+export const useAuth = () => {
+    const context = useContext(AuthContext);
+    if (!context) {
+        throw new Error('useAuth must be used within an AuthProvider');
+    }
+    return context;
+};
+
+// AuthProvider component to manage authentication state
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     // State for authentication tokens: Retrieve authTokens from local storage if available
-    const [authTokens, setAuthTokens] = useState(() => getAuthTokens());
-    // State for username data: From the authTokens obtain the username if available
-    const [username, setUsername] = useState(() => getUserAuthToken(authTokens?.access));
-    // State for user_id data: From the authTokens obtain the user_id if available
-    const [user_id, setUserId] = useState(() => getIdAuthToken(authTokens?.access));
+    const [authTokens, setAuthTokens] = useState<AuthTokens | null>(() => getAuthTokens());
+    // State for username: Derived from authTokens if available
+    const [username, setUsername] = useState<string | null>(() => authTokens?.access ? getUserAuthToken(authTokens.access) : null);
+    // State for user ID: Derived from authTokens if available
+    const [user_id, setUserId] = useState<string | null>(() => authTokens?.access ? getIdAuthToken(authTokens.access) : null);
     // State for loading status
     const [loading, setLoading] = useState(true);
-    // React Router navigate function
-    const navigate = useNavigate();
+    // React Router history hook for navigation
+    const history = useHistory();
 
-    // Function to handle user login using Axios
-    const loginUser = async (e) => {
-        e.preventDefault();
+    // Function to handle user login
+    const loginUser = async (username: string, password: string) => {
         try {
-            const { status, data } = await axios.post("/auth/token/", {
-                'username': e.target.username.value,
-                'password': e.target.password.value
+            const { status, data }: { status: number; data: LoginResponse } = await axios.post("/auth/token/", {
+                username,
+                password
             });
 
-            // Successful Login
             if (status === 200) {
                 setAuthTokens(data);
                 setUserId(getIdAuthToken(data.access));
                 setUsername(getUserAuthToken(data.access));
                 saveAuthTokens(data);
-                navigate('/');
+                history.push('/');
             } else {
-                // Handle login failure
                 alert('Login failed');
             }
         } catch (error) {
@@ -88,10 +118,10 @@ export const AuthProvider = ({ children }) => {
     // Function to log out the user
     const logoutUser = () => {
         setAuthTokens(null);
-        setUserId(null)
+        setUserId(null);
         setUsername(null);
         removeAuthTokens();
-        navigate('/login');
+        history.push('/login');
     };
 
     // Function to update authentication token using Axios
@@ -101,12 +131,11 @@ export const AuthProvider = ({ children }) => {
                 'refresh': authTokens?.refresh
             });
 
-            const { status, data } = response;
-            
-            // User has the correct Token, we can update it
+            const { status, data }: { status: number; data: TokenRefreshResponse } = response;
+
             if (status === 200) {
                 setAuthTokens(data);
-                setUserId(getIdAuthToken(data.access))
+                setUserId(getIdAuthToken(data.access));
                 setUsername(getUserAuthToken(data.access));
                 saveAuthTokens(data);
             } else {
@@ -120,25 +149,15 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    // Context data object to be provided to consumers
-    const contextData = {
-        user_id,
-        username,
-        authTokens,
-        loginUser,
-        logoutUser,
-    };
-
     // Effect to trigger token refresh on component mount and set up refresh interval
     useEffect(() => {
-
         const tokenRefreshDuration = 1000 * 60 * 4;
 
         if (loading) {
             updateToken();
         }
 
-        let interval = setInterval(() => {
+        const interval = setInterval(() => {
             if (authTokens) {
                 updateToken();
             }
@@ -148,6 +167,15 @@ export const AuthProvider = ({ children }) => {
         return () => clearInterval(interval);
 
     }, [authTokens, loading]);
+
+    // Context data object to be provided to consumers
+    const contextData: AuthContextData = {
+        user_id,
+        username,
+        authTokens,
+        loginUser,
+        logoutUser,
+    };
 
     // Render the AuthContext.Provider with the contextData
     return (

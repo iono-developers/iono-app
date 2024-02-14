@@ -1,81 +1,46 @@
-# React App Structure for "Io No" Application
+# Getting Started with Create React App
 
-To develop the "Io No" application in React, you can follow an organized structure to manage different parts of the app. Below is a suggested breakdown into components and folders for the frontend. Remember, this is just a general guide, and you can customize it based on your needs and development style.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-# Basic Structure:
+## Available Scripts
 
-```
-/src
-|-- /components
-|   |-- /Auth
-|   |   |-- LoginForm.jsx
-|   |   |-- RegistrationForm.jsx
-|   |
-|   |-- /Event
-|   |   |-- EventForm.jsx
-|   |   |-- InviteFriendsForm.jsx
-|   |   |-- EventDetails.jsx
-|   |
-|   |-- /Notification
-|   |   |-- NotificationList.jsx
-|   |   |-- NotificationItem.jsx
-|   |
-|   |-- /User
-|       |-- UserProfile.jsx
-|       |-- UserFriendsList.jsx
-|
-|-- /context
-|   |-- AuthContext.jsx
-|   |-- EventContext.jsx
-|
-|-- /services
-|   |-- AuthService.js
-|   |-- EventService.js
-|   |-- NotificationService.js
-|
-|-- /utils
-|   |-- api.js
-|   |-- helpers.js
-|
-|-- /styles
-|   |-- main.scss
-|
-|-- App.jsx
-|-- index.jsx
-|-- Routes.jsx
-|-- config.js
-```
+In the project directory, you can run:
 
-# Explanation:
+### `npm start`
 
-- **components:** Contains React components. The subdivision is based on the functional logic of the application.
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-  - **/Auth:** Manages authentication features such as login and registration.
-  - **/Event:** Manages the creation and handling of events.
-  - **/Notification:** Manages event notifications.
-  - **/User:** Manages user profile display and friends list.
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
 
-- **context:** Contains React contexts for managing the global state of the application.
+### `npm test`
 
-  - **AuthContext.jsx:** Context for handling authentication state.
-  - **EventContext.jsx:** Context for managing events and notifications.
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-- **services:** Contains services that handle communication with the backend.
+### `npm run build`
 
-  - **AuthService.js:** Service for authentication operations.
-  - **EventService.js:** Service for event operations.
-  - **NotificationService.js:** Service for notifications.
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-- **utils:** Contains utility files.
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-  - **api.js:** Manages API calls to the backend.
-  - **helpers.js:** Contains generic utility functions.
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-- **styles:** Contains global style files.
+### `npm run eject`
 
-  - **main.scss:** Main file for styles.
+**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-- **App.jsx:** Main component that contains the app layout.
-- **index.jsx:** App React startup file.
-- **Routes.jsx:** Manages application routes.
-- **config.js:** General app configuration.
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+
+## Learn More
+
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+
+To learn React, check out the [React documentation](https://reactjs.org/).

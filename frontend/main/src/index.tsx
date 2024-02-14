@@ -9,7 +9,9 @@ import BASE_URL from './config';
 // Set the default base URL for all Axios requests
 axios.defaults.baseURL = BASE_URL;
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(
+  document.getElementById('root') as HTMLElement
+);
 root.render(
   <React.StrictMode>
     <App />

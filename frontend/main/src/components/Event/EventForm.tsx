@@ -1,18 +1,24 @@
-// EventForm.jsx
+// EventForm.tsx
 
-import React, { useContext, useState } from 'react';
-
+import React, { useState } from 'react';
 import EventService from '../../services/EventService';
-import AuthContext from '../../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 
+interface FormData {
+    title: string;
+    description: string;
+    photo: File | null;
+    expiration_time: string;
+    invites: string;
+    creator: string | null;
+    created_at: Date | null;
+}
 
-const EventForm = () => {
-    // State to manage form fields
-
+const EventForm: React.FC = () => {
     // Access the authentication context to check if the user is authenticated
-    const { user_id } = useContext(AuthContext);
+    const { user_id } = useAuth();
 
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<FormData>({
         title: '',
         description: '',
         photo: null,
@@ -23,7 +29,7 @@ const EventForm = () => {
     });
 
     // Handle form field changes
-    const handleInputChange = (e) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData({
             ...formData,
@@ -32,7 +38,7 @@ const EventForm = () => {
     };
 
     // Handle form submission
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         try {
@@ -60,7 +66,7 @@ const EventForm = () => {
                 </label>
                 <label>
                     Expire Date:
-                    <input type="datetime-local" name="expiration_time" value={formData.expire_date} onChange={handleInputChange} />
+                    <input type="datetime-local" name="expiration_time" value={formData.expiration_time} onChange={handleInputChange} />
                 </label>
                 <label>
                     Invites:

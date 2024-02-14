@@ -1,52 +1,43 @@
-/**
- * EventDetails Component:
- * 
- * This component displays detailed information about a specific event, including
- * its title, date, creator, description, and invitations. Users can respond to
- * event invitations using the proper button. It utilizes the React Router for
- * handling URL parameters and the AuthContext to check user authentication.
- * 
- * Useful for:
- * - Displaying detailed information about an event, including its title, date,
- *   creator, and description.
- * - Allowing authenticated users to respond to event invitations.
- * - Utilizing React Router for dynamic routing based on event ID in the URL.
- * 
- * When to use:
- * - Integrate this EventDetails component within your React application to
- *   showcase detailed event information and handle user responses.
- * - Ideal for applications with event-based features, where users need to view
- *   and respond to event invitations.
- * 
- * Function Usage Comments:
- * - handleRespond: Handles user responses to event invitations. Calls the
- *   EventService to respond to the invitation and updates local state.
- * 
- */
-
-
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import EventService from '../../services/EventService';
-import AuthContext from '../../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import Loading from '../Utils/Loading';
 
 import '../../styles/main.scss';
 
+// Interface for an event invitation
+interface EventInvite {
+  id: string;
+  invitee_username: string;
+  rejected: boolean;
+}
 
-const EventDetails = () => {
-  
-  // Get the eventId from the URL parameters
-  const { eventId } = useParams();
+// Interface for event details
+interface EventDetails {
+  title: string;
+  expiration_time: string;
+  creator_username: string;
+  description: string;
+  invites: EventInvite[];
+}
+
+interface AuthContextData {
+  username: string | null;
+}
+
+const EventDetails: React.FC = () => {
+  // Get the event ID from the URL params
+  const { eventId } = useParams<{ eventId: string }>();
 
   // Access the authentication context to check if the user is authenticated
-  const { username } = useContext(AuthContext);
-
+  const { username } = useAuth() as AuthContextData;
+  
   // State to store the details of the event
-  const [eventDetails, setEventDetails] = useState(null);
+  const [eventDetails, setEventDetails] = useState<EventDetails | null>(null);
 
-  // Use useEffect to fetch event details when the component mounts
+  // Fetch event details when the component mounts
   useEffect(() => {
     const fetchEventDetails = async () => {
       try {
@@ -65,11 +56,10 @@ const EventDetails = () => {
   }, [eventId]);
 
   // Handle user response to the event invitation
-  const handleRespond = async (response) => {
+  const handleRespond = async (response: 'accept' | 'decline') => {
     try {
       // Call the EventService to respond to the event invitation
       await EventService.respondToInvite(eventId, response);
-
       // Handle the response, e.g., update local state or trigger a refresh
     } catch (error) {
       console.error('Error responding to invite:', error);
@@ -83,7 +73,7 @@ const EventDetails = () => {
 
   // If eventDetails is not available yet, show a loading message
   if (!eventDetails) {
-    return <Loading/>;
+    return <Loading />;
   }
 
   // Check if the user has already responded to the invitation

@@ -23,24 +23,40 @@
  * 
  */
 
+import React, { useState } from 'react';
+import { useAuth } from '../../context/AuthContext';
 
-import React, { useContext } from 'react'
+const Login: React.FC = () => {
+  const { loginUser } = useAuth();
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
-import AuthContext from '../../context/AuthContext'
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const target = event.target as typeof event.target & {
+      username: { value: string };
+      password: { value: string };
+    };
+    const { username, password } = target;
 
+    try {
+      await loginUser(username.value, password.value);
+    } catch (error) {
+      setErrorMessage('Login failed. Please check your credentials.');
+      console.error('Login error:', error);
+    }
+  };
 
-const Login = () => {
-  let { loginUser } = useContext(AuthContext)
   return (
     <div>
       <h1>Login</h1>
-      <form onSubmit={loginUser}>
-        <input type="text" name="username" placeholder="Enter Username" />
-        <input type="password" name="password" placeholder="Enter Password" />
+      <form onSubmit={handleSubmit}>
+        <input type="text" name="username" placeholder="Enter Username" required />
+        <input type="password" name="password" placeholder="Enter Password" required />
         <button type="submit">Login</button>
       </form>
+      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

@@ -20,14 +20,14 @@
  * 
  */
 
-
 import React, { useContext } from 'react';
 
 import EventMini from './EventMini';
 import EventContext from '../../context/EventContext';
 
+interface EventListProps {}
 
-const EventList = () => {
+const EventList: React.FC<EventListProps> = () => {
   // Access the events from the EventContext
   const { events } = useContext(EventContext);
 
