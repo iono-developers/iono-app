@@ -1,82 +1,130 @@
-// EventForm.tsx
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
-import React, { useState } from 'react';
-import EventService from '../../services/EventService';
+import EventService, { EventCreateData } from '../../services/EventService';
+import UserService, { UserData } from '../../services/UsersService';
 import { useAuth } from '../../context/AuthContext';
 
-interface FormData {
-    title: string;
-    description: string;
-    photo: File | null;
-    expiration_time: string;
-    invites: string;
-    creator: string | null;
-    created_at: Date | null;
-}
+import '../../styles/main.scss'; // Import the main SCSS file for global styles
 
 const EventForm: React.FC = () => {
-    // Access the authentication context to check if the user is authenticated
+    const history = useHistory();
     const { user_id } = useAuth();
 
-    const [formData, setFormData] = useState<FormData>({
+    const [formData, setFormData] = useState<EventCreateData>({
         title: '',
+        creator: user_id, // Assuming user_id is the creator ID
         description: '',
-        photo: null,
         expiration_time: '',
-        invites: '',
-        creator: user_id,
-        created_at: null,
+        invites: [],
     });
 
-    // Handle form field changes
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
+    const [users, setUsers] = useState<UserData[]>([]);
+    const [showInviteFriends, setShowInviteFriends] = useState<boolean>(false); // State to toggle between event creation and inviting friends phases
+
+    useEffect(() => {
+        // Fetch users from the backend when the component mounts
+        const fetchUsers = async () => {
+            try {
+                const usersData = await UserService.getUsers();
+                setUsers(usersData);
+            } catch (error) {
+                console.error('Error fetching users:', error);
+            }
+        };
+        fetchUsers();
+    }, []);
+
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = event.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
     };
 
-    // Handle form submission
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleInvite = (id: string) => {
+        if (!formData.invites.some(invite => invite === id)) {
+            setFormData(prevState => ({
+                ...prevState,
+                invites: [
+                    ...prevState.invites,
+                    id
+                ]
+            }));
+        }
+    };
+
+    const handleRemoveInvite = (id : string) => {
+        setFormData(prevState => ({
+            ...prevState,
+            invites: prevState.invites.filter(invite => invite !== id)
+        }));
+    };
+
+    const handleSubmitFirstPhase = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setShowInviteFriends(true); // Move to the second phase of event creation
+    };
 
+    const handleSubmitSecondPhase = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         try {
-            // Call the EventService to create a new event with the form data
             await EventService.createEvent(formData);
-
-            // Optionally, you can handle success (e.g., redirect to event list)
             console.log('Event created successfully!');
+            history.push('/events'); // Redirect to the events page
         } catch (error) {
             console.error('Error creating event:', error);
         }
     };
 
     return (
-        <div>
-            <h2>Create Event</h2>
-            <form onSubmit={handleSubmit}>
-                <label>
-                    Title:
-                    <input type="text" name="title" value={formData.title} onChange={handleInputChange} />
-                </label>
-                <label>
-                    Description:
-                    <textarea name="description" value={formData.description} onChange={handleInputChange} />
-                </label>
-                <label>
-                    Expire Date:
-                    <input type="datetime-local" name="expiration_time" value={formData.expiration_time} onChange={handleInputChange} />
-                </label>
-                <label>
-                    Invites:
-                    <input type="text" name="invites" value={formData.invites} onChange={handleInputChange} />
-                </label>
-
-                {/* Add more form fields as needed */}
-
-                <button type="submit">Create Event</button>
-            </form>
+        <div className="container"> {/* Apply container class for centering */}
+            <div className="login-form"> {/* Apply login-form class for styling */}
+                {!showInviteFriends ? (
+                    <>
+                        <h2 className="form-title">Create Event - Step 1</h2> {/* Add margin below the title */}
+                        <form onSubmit={handleSubmitFirstPhase}>
+                            <div className="form-group"> {/* Apply form-group class for styling */}
+                                <label>Title:</label>
+                                <input type="text" name="title" value={formData.title} onChange={handleInputChange} />
+                            </div>
+                            <div className="form-group"> {/* Apply form-group class for styling */}
+                                <label>Description:</label>
+                                <textarea name="description" value={formData.description} onChange={handleInputChange} rows={4} />
+                            </div>
+                            <div className="form-group"> {/* Apply form-group class for styling */}
+                                <label>Expire Date:</label>
+                                <input type="datetime-local" name="expiration_time" value={formData.expiration_time} onChange={handleInputChange} />
+                            </div>
+                            <button type="submit" className="create-event-btn">Next: Invite Friends</button>
+                        </form>
+                    </>
+                ) : (
+                    <>
+                        <div className="form-container"> {/* Add a container for form styling */}
+                            <h2 className="form-title">Invita i tuoi amici</h2>
+                            <form onSubmit={handleSubmitSecondPhase}>
+                                <div className="form-group">
+                                    <ul className="invite-list"> {/* Add a class for the list */}
+                                        {users.map(user => (
+                                            <li key={user.id} className="invite-list-item">
+                                                {user.username}
+                                                {formData.invites.includes(user.id) ? (
+                                                    <button type="button" className="remove-invite-button" onClick={() => handleRemoveInvite(user.id)}>Remove</button>
+                                                ) : (
+                                                    <button type="button" className="invite-button" onClick={() => handleInvite(user.id)}>Invite</button>
+                                                )}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                                <button type="submit" className="create-event-btn">Create Event</button> {/* Use the existing button style */}
+                            </form>
+                        </div>
+                    </>
+                )}
+            </div>
         </div>
     );
 };

@@ -4,9 +4,13 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.generics import get_object_or_404
 from .models import FriendRequest
-from .serializers import FriendRequestSerializer
+from .serializers import FriendRequestSerializer, UsersSerializer
 from django.contrib.auth import get_user_model
 
+
+class UsersViewSet(viewsets.ModelViewSet):
+    queryset = get_user_model().objects.all()
+    serializer_class = UsersSerializer
 
 class FriendRequestViewSet(viewsets.ModelViewSet):
     queryset = FriendRequest.objects.all()

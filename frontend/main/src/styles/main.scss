@@ -1,6 +1,4 @@
-// main.scss
-
-// Global styles
+/* Global styles */
 
 // Reset default margin and padding
 * {
@@ -11,11 +9,8 @@
 
 // Set a default font family
 body {
+  margin: 10px;
   font-family: 'Arial', sans-serif;
-}
-
-// Set a global background color for dark mode
-body {
   background-color: #1a1a1a;
   color: #fff; // Set text color to white in dark mode
 }
@@ -23,14 +18,12 @@ body {
 // Add some styling to headings
 h1, h2, h3, h4, h5, h6 {
   color: #bbb; // Light gray for headings in dark mode
-  margin-bottom: 10px;
 }
 
 // Add styling to paragraphs
 p {
   line-height: 1.6;
   color: #999; // Light gray for paragraphs in dark mode
-  margin-bottom: 15px;
 }
 
 // Add styling to buttons
@@ -45,18 +38,20 @@ button {
   transition: background-color 0.3s ease;
 
   &:hover {
-      background-color: #0056b3;
+    background-color: #0056b3;
   }
 }
 
 // Add styling to input fields
-input {
+input, textarea {
   padding: 10px;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
   background-color: #333; // Dark background for input fields
   color: #fff; // Text color for input fields
+  width: 100%; // Make the input fields span the entire width
+  margin-bottom: 15px; // Add margin between input fields
 }
 
 // Add styling to links
@@ -65,6 +60,199 @@ a {
   text-decoration: none;
 
   &:hover {
-      text-decoration: underline;
+    text-decoration: underline;
   }
+}
+
+/* Component-specific styles */
+
+/* Container styles */
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+/* Login form styles */
+.login-form {
+  text-align: center;
+}
+
+.form-title {
+  margin-bottom: 30px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+/* Event list styles */
+.event-list-container {
+  text-align: center;
+}
+
+.event-list-title {
+  color: #fff;
+  font-size: 24px;
+  margin: 20px;
+}
+
+.event-list-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.event-list-wrapper ul {
+  list-style-type: none;
+  padding: 0;
+  flex-direction: column;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.event-list-wrapper ul li
+{width: 100%;}
+
+/* Event mini styles */
+.event-mini-container {
+  background-color: #333;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.event-mini {
+  color: #fff;
+}
+
+.event-mini h3 {
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.event-mini button {
+  font-size: 20px;
+  margin-top: 15px;
+}
+
+
+/* Actions bar styles */
+.actions-bar-container {
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  margin-bottom: 20px;
+  gap: 10px;
+  font-size: 20px;
+}
+
+.create-event-btn, .invited-events-btn, .manage-events-btn {
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.create-event-btn {
+  background-color: #28a745;
+}
+
+.invited-events-btn {
+  background-color: #007bff;
+}
+
+.manage-events-btn {
+  background-color: #dc3545;
+}
+
+
+/* Event Details */
+
+.event-details-container {
+  background-color: #333;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center; // Center align the content
+}
+
+.event-details-container h2 {
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.details-event-description {
+  margin: 20px auto;
+}
+
+.event-header p {
+  margin-bottom: 10px;
+}
+
+.event-description {
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.event-description p {
+  margin-bottom: 10px;
+}
+
+.invitations-section {
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.invitations-section h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.invitations-section ul {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  justify-content: center; // Center align the list items
+}
+
+.invitations-section li {
+  margin-bottom: 5px;
+  padding: 5px;
+}
+
+.invitations-section li.pending {
+  color: orange; // Set color for pending invitations
+}
+
+.invitations-section li.refused {
+  color: green; // Set color for refused invitations
+}
+
+.user-response-section {
+  color: #fff;
+}
+
+/* Invite Friends */
+
+.form-container {
+  text-align: center; /* Center align the form */
+}
+
+.invite-list {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column; /* Stack list items vertically */
+  align-items: center; /* Center align list items horizontally */
+}
+
+.invite-list-item {
+  width: 100%;
+  margin-bottom: 10px; /* Adjust margin for list items */
+}
+
+.invite-button {
+  margin-left: 10px; /* Add some space between username and button */
 }

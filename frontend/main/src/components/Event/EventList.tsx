@@ -21,11 +21,13 @@
  */
 
 import React, { useContext } from 'react';
+import '../../styles/main.scss'; // Importa il file SCSS modificato
 
 import EventMini from './EventMini';
 import EventContext from '../../context/EventContext';
+import ActionsBar from './ActionsBar';
 
-interface EventListProps {}
+interface EventListProps { }
 
 const EventList: React.FC<EventListProps> = () => {
   // Access the events from the EventContext
@@ -33,18 +35,23 @@ const EventList: React.FC<EventListProps> = () => {
 
   return (
     <div>
-      <h2>Event List</h2>
-      {events.length === 0 ? (
-        <p>No events available.</p>
-      ) : (
-        <ul>
-          {events.map((event) => (
-            <li key={event.id}>
-              <EventMini eventDetails={event} />
-            </li>
-          ))}
-        </ul>
-      )}
+      <ActionsBar />
+      <div className="event-list-container">
+        <h2 className="event-list-title">Le Ultime Sfide</h2>
+        <div className="event-list-wrapper">
+          {events.length === 0 ? (
+            <p>No events available.</p>
+          ) : (
+            <ul>
+              {events.map((event) => (
+                <li key={event.id}>
+                  <EventMini eventDetails={event} />
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

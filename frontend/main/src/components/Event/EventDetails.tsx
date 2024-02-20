@@ -1,31 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-import EventService from '../../services/EventService';
-import { useAuth } from '../../context/AuthContext';
+
+import EventService, { EventDetailsData, EventInviteData } from '../../services/EventService';
+import { useAuth, AuthContextData } from '../../context/AuthContext';
 import Loading from '../Utils/Loading';
 
 import '../../styles/main.scss';
-
-// Interface for an event invitation
-interface EventInvite {
-  id: string;
-  invitee_username: string;
-  rejected: boolean;
-}
-
-// Interface for event details
-interface EventDetails {
-  title: string;
-  expiration_time: string;
-  creator_username: string;
-  description: string;
-  invites: EventInvite[];
-}
-
-interface AuthContextData {
-  username: string | null;
-}
 
 const EventDetails: React.FC = () => {
   // Get the event ID from the URL params
@@ -33,9 +15,12 @@ const EventDetails: React.FC = () => {
 
   // Access the authentication context to check if the user is authenticated
   const { username } = useAuth() as AuthContextData;
-  
+
   // State to store the details of the event
-  const [eventDetails, setEventDetails] = useState<EventDetails | null>(null);
+  const [eventDetails, setEventDetails] = useState<EventDetailsData | null>(null);
+
+  // State to handle loading status
+  const [loading, setLoading] = useState<boolean>(true);
 
   // Fetch event details when the component mounts
   useEffect(() => {
@@ -43,11 +28,12 @@ const EventDetails: React.FC = () => {
       try {
         // Call the EventService to get details of the event using the eventId
         const event = await EventService.getEventDetails(eventId);
-
         // Update the state with the retrieved event details
         setEventDetails(event);
       } catch (error) {
         console.error('Error fetching event details:', error);
+      } finally {
+        setLoading(false); // Set loading to false after fetching
       }
     };
 
@@ -63,6 +49,7 @@ const EventDetails: React.FC = () => {
       // Handle the response, e.g., update local state or trigger a refresh
     } catch (error) {
       console.error('Error responding to invite:', error);
+      // Handle error gracefully, e.g., show a notification to the user
     }
   };
 
@@ -72,46 +59,42 @@ const EventDetails: React.FC = () => {
   }
 
   // If eventDetails is not available yet, show a loading message
-  if (!eventDetails) {
+  if (loading) {
     return <Loading />;
   }
-
-  // Check if the user has already responded to the invitation
-  const userResponse = eventDetails.invites.find(invite => invite.invitee_username === username);
 
   // Render the event details along with buttons for user response
   return (
     <div className="event-details-container">
-      <div className="event-header">
-        <h2>{eventDetails.title}</h2>
-        <p>Date: {eventDetails.expiration_time}</p>
-        <p>Creator: {eventDetails.creator_username}</p>
-      </div>
+        <h2>{eventDetails?.title}</h2>
 
-      <div className="event-description">
-        <p>Description: {eventDetails.description}</p>
-      </div>
+        <p>
+          Creato da {''}
+          <Link to={`/users/${eventDetails?.creator.username}`}>
+            {eventDetails?.creator.username}
+          </Link> {''}
+          alle {eventDetails?.created_at}
+        </p>
+
+        <p>Scade alle <b>{eventDetails?.expiration_time}</b></p>
+        <p className="details-event-description">{eventDetails?.description}</p>
 
       <div className="invitations-section">
-        <h3>Invitations:</h3>
+        <h3>Inviti</h3>
         <ul>
-          {eventDetails.invites.map(invite => (
-            <li key={invite.id}>
-              {invite.invitee_username} - {invite.rejected ? 'Declined' : 'Pending'}
+          {eventDetails?.invites.map(invite => (
+            <li
+              key={invite.invitee.id}
+              className={invite.rejected ? 'refused' : 'pending'}
+            >
+              {invite.invitee.username}
             </li>
           ))}
         </ul>
       </div>
 
       <div className="user-response-section">
-        {userResponse ? (
-          <p>Your response: {userResponse.rejected ? 'Declined' : 'Accepted'}</p>
-        ) : (
-          <div className="response-buttons">
-            <button onClick={() => handleRespond('accept')}>Accept</button>
-            <button onClick={() => handleRespond('decline')}>Decline</button>
-          </div>
-        )}
+        {/* User response handling */}
       </div>
     </div>
   );

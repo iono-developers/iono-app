@@ -23,12 +23,14 @@
  * 
  */
 
+// Import the main.scss file
+import '../../styles/main.scss'
+
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 
 const Login: React.FC = () => {
   const { loginUser } = useAuth();
-  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -37,24 +39,25 @@ const Login: React.FC = () => {
       password: { value: string };
     };
     const { username, password } = target;
-
-    try {
-      await loginUser(username.value, password.value);
-    } catch (error) {
-      setErrorMessage('Login failed. Please check your credentials.');
-      console.error('Login error:', error);
-    }
+    await loginUser(username.value, password.value);
   };
 
   return (
-    <div>
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
-        <input type="text" name="username" placeholder="Enter Username" required />
-        <input type="password" name="password" placeholder="Enter Password" required />
-        <button type="submit">Login</button>
-      </form>
-      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+    <div className="container"> {/* Added container class */}
+      <div className="login-form"> {/* Added login-form class */}
+        <h1>Login</h1>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group"> {/* Added form-group class */}
+            <input className="login-input" type="text" name="username" placeholder="Enter Username" required />
+          </div>
+          <div className="form-group"> {/* Added form-group class */}
+            <input className="login-input" type="password" name="password" placeholder="Enter Password" required />
+          </div>
+          <div className="form-group"> {/* Added form-group class */}
+            <button type="submit">Login</button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

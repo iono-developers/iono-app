@@ -23,15 +23,11 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import '../../styles/main.scss'; // Aggiungi file SCSS per gli stili del componente
+import { EventDetailsData } from '../../services/EventService';
 
-interface EventDetails {
-  id: string;
-  title: string;
-  creator_username: string;
-  description: string;
-}
 
-const EventMini: React.FC<{ eventDetails: EventDetails | null }> = ({ eventDetails }) => {
+const EventMini: React.FC<{ eventDetails: EventDetailsData }> = ({ eventDetails }) => {
   if (!eventDetails) {
     return null;
   }
@@ -39,13 +35,15 @@ const EventMini: React.FC<{ eventDetails: EventDetails | null }> = ({ eventDetai
   const eventDetailsLink = `/events/${eventDetails.id}`;
 
   return (
-    <div className="small-event">
-      <h3>{eventDetails.title}</h3>
-      <p>Creator: {eventDetails.creator_username}</p>
-      <p>Description: {eventDetails.description}</p>
-      <Link to={eventDetailsLink}>
-        <button>Vai All'evento</button>
-      </Link>
+    <div className="event-mini-container"> {/* Aggiungi una classe per lo stile del rettangolo */}
+      <div className="event-mini">
+        <h3>{eventDetails.title}</h3>
+        <p>Creato da <Link to={`/users/${eventDetails.creator.username}`}>{eventDetails.creator.username}</Link></p>
+        <p>Scade il <b>{eventDetails.expiration_time}</b></p>
+        <Link to={eventDetailsLink}>
+          <button>Vai All'evento</button>
+        </Link>
+      </div>
     </div>
   );
 };

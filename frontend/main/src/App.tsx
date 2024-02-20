@@ -6,7 +6,7 @@ import PrivateRoute from './utils/PrivateRoute';
 import EventDetails from './components/Event/EventDetails';
 import EventList from './components/Event/EventList';
 import EventForm from './components/Event/EventForm';
-import Loading from './components/Utils/Loading';
+import User from './components/Users/User';
 
 function App() {
   return (
@@ -15,16 +15,20 @@ function App() {
         <AuthProvider>
           <EventProvider>
             <Switch>
+
               <Route path="/login">
                 <Login />
               </Route>
 
               <PrivateRoute>
-                <Route exact path=''>
+                <Route exact path='/events/'>
                   <EventList />
                 </Route>
-                <Route exact path='/loading'>
-                  <Loading />
+                <Route exact path='/'>
+                  <EventList />
+                </Route>
+                <Route exact path='/users/:userId'>
+                  <User />
                 </Route>
                 <Route exact path='/create'>
                   <EventForm />
@@ -33,6 +37,7 @@ function App() {
                   <EventDetails />
                 </Route>
               </PrivateRoute>
+
             </Switch>
           </EventProvider>
         </AuthProvider>

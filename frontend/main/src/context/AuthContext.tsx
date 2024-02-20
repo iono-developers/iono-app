@@ -59,7 +59,7 @@ interface TokenRefreshResponse {
 }
 
 // Define the shape of the authentication context data
-interface AuthContextData {
+export interface AuthContextData {
     user_id: string | null;
     username: string | null;
     authTokens: AuthTokens | null;
@@ -105,7 +105,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 setUserId(getIdAuthToken(data.access));
                 setUsername(getUserAuthToken(data.access));
                 saveAuthTokens(data);
-                history.push('/');
+                history.push('/events/');
             } else {
                 alert('Login failed');
             }
