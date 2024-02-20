@@ -23,19 +23,20 @@ h1, h2, h3, h4, h5, h6 {
 // Add styling to paragraphs
 p {
   line-height: 1.6;
-  color: #999; // Light gray for paragraphs in dark mode
+  color: #cacaca; // Light gray for paragraphs in dark mode
 }
 
 // Add styling to buttons
 button {
   cursor: pointer;
-  padding: 10px 15px;
+  padding: 10px 0px;
   font-size: 16px;
   background-color: #007bff;
   color: #fff;
   border: none;
   border-radius: 4px;
   transition: background-color 0.3s ease;
+  width: 100%;
 
   &:hover {
     background-color: #0056b3;
@@ -64,6 +65,9 @@ a {
   }
 }
 
+
+
+
 /* Component-specific styles */
 
 /* Container styles */
@@ -72,15 +76,24 @@ a {
   align-items: center;
   justify-content: center;
   height: 100vh;
+  flex-direction: column;
 }
 
+
+
+
 /* Login form styles */
-.login-form {
+
+.form-container {
   text-align: center;
 }
 
 .form-title {
   margin-bottom: 30px;
+}
+
+.form-name-label{
+  margin-bottom: 5px;
 }
 
 .form-group {
@@ -151,20 +164,27 @@ a {
 .create-event-btn, .invited-events-btn, .manage-events-btn {
   color: #fff;
   border: none;
-  padding: 10px 20px;
+  padding: 15px 40px;
+  margin-top: 25px;
   border-radius: 4px;
   cursor: pointer;
 }
 
 .create-event-btn {
+  padding: 10px;
+  margin-top: 0px;
   background-color: #28a745;
 }
 
 .invited-events-btn {
+  padding: 10px;
+  margin-top: 0px;
   background-color: #007bff;
 }
 
 .manage-events-btn {
+  padding: 10px;
+  margin-top: 0px;
   background-color: #dc3545;
 }
 
@@ -200,39 +220,33 @@ a {
   margin-bottom: 10px;
 }
 
-.invitations-section {
-  color: #fff;
-  margin-bottom: 20px;
+.invitations-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+
+  th,
+  td {
+    padding: 8px;
+    border-top: 2px solid #ddd;
+    border-bottom: 2px solid #ddd;
+    text-align: center; /* Center align text within cells */
+    font-size: 16px;
+  }
+
+  th {
+    color: #fff; /* Light text color for header */
+  }
+
+  .pending {
+    background-color: #941616; /* Dark background color for pending status */
+  }
+
+  td span {
+    color: #fff; /* Light text color for status */
+  }
 }
 
-.invitations-section h3 {
-  font-size: 20px;
-  margin-bottom: 10px;
-}
-
-.invitations-section ul {
-  list-style-type: none;
-  padding: 0;
-  display: flex;
-  justify-content: center; // Center align the list items
-}
-
-.invitations-section li {
-  margin-bottom: 5px;
-  padding: 5px;
-}
-
-.invitations-section li.pending {
-  color: orange; // Set color for pending invitations
-}
-
-.invitations-section li.refused {
-  color: green; // Set color for refused invitations
-}
-
-.user-response-section {
-  color: #fff;
-}
 
 /* Invite Friends */
 

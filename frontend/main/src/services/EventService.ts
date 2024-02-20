@@ -44,6 +44,8 @@ export interface EventCreateData {
 export interface EventInviteData {
   invitee: UserData;
   rejected: boolean;
+  rejected_time: string;
+  rejected_date: string;
 }
 
 export interface EventDetailsData {
@@ -51,8 +53,10 @@ export interface EventDetailsData {
   title: string;
   creator: UserData;
   description: string;
+  creation_date: string,
+  creation_time: string,
+  expiration_date: string,
   expiration_time: string,
-  created_at: string,
   invites: EventInviteData[];
 }
 

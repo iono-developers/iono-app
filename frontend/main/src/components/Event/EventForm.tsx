@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useContext } from 'react';
 
 import EventService, { EventCreateData } from '../../services/EventService';
 import UserService, { UserData } from '../../services/UsersService';
 import { useAuth } from '../../context/AuthContext';
+import EventContext from '../../context/EventContext';
 
 import '../../styles/main.scss'; // Import the main SCSS file for global styles
 
 const EventForm: React.FC = () => {
     const history = useHistory();
     const { user_id } = useAuth();
+    const { events, updateEvents } = useContext(EventContext);
 
     const [formData, setFormData] = useState<EventCreateData>({
         title: '',
@@ -55,7 +58,7 @@ const EventForm: React.FC = () => {
         }
     };
 
-    const handleRemoveInvite = (id : string) => {
+    const handleRemoveInvite = (id: string) => {
         setFormData(prevState => ({
             ...prevState,
             invites: prevState.invites.filter(invite => invite !== id)
@@ -71,8 +74,10 @@ const EventForm: React.FC = () => {
         e.preventDefault();
         try {
             await EventService.createEvent(formData);
-            console.log('Event created successfully!');
+            updateEvents()
             history.push('/events'); // Redirect to the events page
+            
+
         } catch (error) {
             console.error('Error creating event:', error);
         }
@@ -80,24 +85,24 @@ const EventForm: React.FC = () => {
 
     return (
         <div className="container"> {/* Apply container class for centering */}
-            <div className="login-form"> {/* Apply login-form class for styling */}
+            <div className="form-container"> {/* Apply login-form class for styling */}
                 {!showInviteFriends ? (
                     <>
-                        <h2 className="form-title">Create Event - Step 1</h2> {/* Add margin below the title */}
+                        <h2 className="form-title">Crea Sfida!</h2> {/* Add margin below the title */}
                         <form onSubmit={handleSubmitFirstPhase}>
                             <div className="form-group"> {/* Apply form-group class for styling */}
-                                <label>Title:</label>
+                                <p className='form-name-label'>Titolo:</p>
                                 <input type="text" name="title" value={formData.title} onChange={handleInputChange} />
                             </div>
                             <div className="form-group"> {/* Apply form-group class for styling */}
-                                <label>Description:</label>
-                                <textarea name="description" value={formData.description} onChange={handleInputChange} rows={4} />
+                                <p  className='form-name-label'>Descrizione:</p >
+                                <textarea name="description" value={formData.description} onChange={handleInputChange} rows={6} />
                             </div>
                             <div className="form-group"> {/* Apply form-group class for styling */}
-                                <label>Expire Date:</label>
+                                <p  className='form-name-label'>Data di scadenza:</p >
                                 <input type="datetime-local" name="expiration_time" value={formData.expiration_time} onChange={handleInputChange} />
                             </div>
-                            <button type="submit" className="create-event-btn">Next: Invite Friends</button>
+                            <button type="submit" className="create-event-btn"><b>Invita i tuoi Amici</b></button>
                         </form>
                     </>
                 ) : (

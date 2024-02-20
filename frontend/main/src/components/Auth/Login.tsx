@@ -44,8 +44,8 @@ const Login: React.FC = () => {
 
   return (
     <div className="container"> {/* Added container class */}
-      <div className="login-form"> {/* Added login-form class */}
-        <h1>Login</h1>
+      <div className="form-container"> {/* Added login-form class */}
+        <h2 className='form-title'>Login</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group"> {/* Added form-group class */}
             <input className="login-input" type="text" name="username" placeholder="Enter Username" required />

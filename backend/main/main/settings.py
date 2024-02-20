@@ -122,8 +122,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
-
 USE_I18N = True
 
 USE_TZ = True
@@ -141,7 +139,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Ugly
 # We need to find another solution for timezone
-USE_TZ = False
+TIME_ZONE = 'Europe/Rome'
 
 # Set our database User as the default User model
 AUTH_USER_MODEL = 'authentication.User'

@@ -39,7 +39,7 @@ const EventMini: React.FC<{ eventDetails: EventDetailsData }> = ({ eventDetails 
       <div className="event-mini">
         <h3>{eventDetails.title}</h3>
         <p>Creato da <Link to={`/users/${eventDetails.creator.username}`}>{eventDetails.creator.username}</Link></p>
-        <p>Scade il <b>{eventDetails.expiration_time}</b></p>
+        <p>Scade il <b>{eventDetails.expiration_date}</b> alle <b>{eventDetails.expiration_time}</b></p>
         <Link to={eventDetailsLink}>
           <button>Vai All'evento</button>
         </Link>

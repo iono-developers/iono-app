@@ -27,16 +27,16 @@
 
 
 import React, { createContext, useState, useEffect } from 'react';
-import EventService from '../services/EventService';
+import EventService, { EventDetailsData } from '../services/EventService';
 
 // Define the shape of the event context data
 interface EventContextData {
-    events: any[]; // Modify 'any' to the type of your events if known
-    // Add additional event-related values or functions here if needed
+    events: EventDetailsData[];
+    updateEvents: () => void; // Function to update events
 }
 
 // Create the event context
-const EventContext = createContext<EventContextData>({ events: [] });
+const EventContext = createContext<EventContextData>({ events: [], updateEvents: () => { } });
 export default EventContext;
 
 // EventProvider component to manage event-related data
@@ -46,26 +46,32 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     // useEffect to fetch events on component mount
     useEffect(() => {
-        const fetchEvents = async () => {
-            try {
-                // Replace this with your actual data fetching logic
-                const fetchedEvents = await EventService.getEvents();
-
-                // Update the state with the fetched events
-                setEvents(fetchedEvents);
-            } catch (error) {
-                console.error('Error fetching events:', error);
-            }
-        };
-
-        // Call the fetchEvents function on component mount
         fetchEvents();
     }, []);
+
+    // Function to fetch events from the backend
+    const fetchEvents = async () => {
+        try {
+            const fetchedEvents = await EventService.getEvents();
+            setEvents(fetchedEvents);
+        } catch (error) {
+            console.error('Error fetching events:', error);
+        }
+    };
+
+    // Function to update events
+    const updateEvents = async () => {
+        try {
+            await fetchEvents(); // Fetch fresh events
+        } catch (error) {
+            console.error('Error updating events:', error);
+        }
+    };
 
     // Value object to be provided to components consuming this context
     const contextValue: EventContextData = {
         events,
-        // Add additional event-related values or functions here if needed
+        updateEvents,
     };
 
     // Provide the context value to its children components

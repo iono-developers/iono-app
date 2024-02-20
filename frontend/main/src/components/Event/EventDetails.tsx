@@ -53,6 +53,14 @@ const EventDetails: React.FC = () => {
     }
   };
 
+  const renderInviteStatus = (invite: EventInviteData) => {
+    if (invite.rejected) {
+      return <span>{invite.rejected_date} alle {invite.rejected_time}</span>;
+    } else {
+      return <span>Nessuna Risposta</span>;
+    }
+  };
+
   // If the user is not authenticated, display a message or redirect
   if (!username) {
     return <p>Please log in to view event details.</p>;
@@ -66,36 +74,38 @@ const EventDetails: React.FC = () => {
   // Render the event details along with buttons for user response
   return (
     <div className="event-details-container">
-        <h2>{eventDetails?.title}</h2>
+      <h2>{eventDetails?.title}</h2>
 
-        <p>
-          Creato da {''}
-          <Link to={`/users/${eventDetails?.creator.username}`}>
-            {eventDetails?.creator.username}
-          </Link> {''}
-          alle {eventDetails?.created_at}
-        </p>
+      <p>
+        Creato da{' '}
+        <Link to={`/users/${eventDetails?.creator.username}`}>
+          {eventDetails?.creator.username}
+        </Link>{' '}
+        il <b>{eventDetails?.creation_date}</b> alle{' '}
+        <b>{eventDetails?.creation_time}</b>
+      </p>
 
-        <p>Scade alle <b>{eventDetails?.expiration_time}</b></p>
-        <p className="details-event-description">{eventDetails?.description}</p>
+      <p>
+        Scade il <b>{eventDetails?.expiration_date}</b> alle{' '}
+        <b>{eventDetails?.expiration_time}</b>
+      </p>
+      <p className="details-event-description">{eventDetails?.description}</p>
 
       <div className="invitations-section">
-        <h3>Inviti</h3>
-        <ul>
-          {eventDetails?.invites.map(invite => (
-            <li
-              key={invite.invitee.id}
-              className={invite.rejected ? 'refused' : 'pending'}
-            >
-              {invite.invitee.username}
-            </li>
-          ))}
-        </ul>
+        <h3>Invitati</h3>
+        <table className="invitations-table">
+          <tbody>
+            {eventDetails?.invites.map((invite) => (
+              <tr key={invite.invitee.id} className={invite.rejected ? 'refused' : 'pending'}>
+                <td>{invite.invitee.username}</td>
+                <td>{renderInviteStatus(invite)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
-      <div className="user-response-section">
-        {/* User response handling */}
-      </div>
+      <div className="user-response-section">{/* User response handling */}</div>
     </div>
   );
 };
