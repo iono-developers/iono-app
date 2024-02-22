@@ -3,6 +3,7 @@ from .models import Event, Invite, Loser
 from users.serializers import UsersSerializer
 from users.models import User
 from .utils import format_datetime
+from datetime import datetime
 
 
 class InviteSerializer(serializers.ModelSerializer):
@@ -20,6 +21,21 @@ class InviteSerializer(serializers.ModelSerializer):
     def get_rejected_time(self, obj):
         return format_datetime(obj.rejected_at)['time']
 
+
+class RefuseInviteSerializer(serializers.ModelSerializer):
+    event = serializers.PrimaryKeyRelatedField(queryset=Event.objects.all())
+    invitee = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    
+    class Meta:
+        model = Invite
+        fields = ['event', 'invitee']
+
+    def update(self, instance, validated_data):
+        instance.rejected = True
+        instance.rejected_at = datetime.now()
+        instance.save()
+        return instance
+        
 
 class EventSerializer(serializers.ModelSerializer):
     invites = InviteSerializer(many=True)
@@ -40,10 +56,15 @@ class EventSerializer(serializers.ModelSerializer):
         return format_datetime(obj.created_at)['time']
 
     def get_expiration_date(self, obj):
-        return format_datetime(obj.expiration_time)['date']
+        return format_datetime(obj.expired_at)['date']
 
     def get_expiration_time(self, obj):
-        return format_datetime(obj.expiration_time)['time']
+        return format_datetime(obj.expired_at)['time']
+    
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data['invites'] = sorted(data['invites'], key=lambda invite: (not invite['rejected'], invite['rejected_time'] or '9999-99-99 99:99'))
+        return data
 
 class EventCreateSerializer(serializers.ModelSerializer):
     invites = serializers.PrimaryKeyRelatedField(many=True, queryset=User.objects.all())
@@ -51,7 +72,7 @@ class EventCreateSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Event
-        fields = ['title', 'description', 'expiration_time', 'invites', 'creator']
+        fields = ['title', 'description', 'expired_at', 'invites', 'creator']
     
     def create(self, validated_data):
         invites_data = validated_data.pop('invites')

@@ -35,6 +35,9 @@ DEBUG = os.environ.get("DEBUG")
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(",")
 
 
+CORS_ALLOWED_ORIGINS = os.environ.get("CORS_ALLOWED_ORIGINS").split(",")
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -167,11 +170,3 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 CORS_ALLOW_CREDENTIALS = True
-
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "http://127.0.0.1:8000",
-    "http://127.0.0.1",
-    'http://127.0.0.1:8001'
-]

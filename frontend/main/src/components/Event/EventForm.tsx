@@ -12,13 +12,13 @@ import '../../styles/main.scss'; // Import the main SCSS file for global styles
 const EventForm: React.FC = () => {
     const history = useHistory();
     const { user_id } = useAuth();
-    const { events, updateEvents } = useContext(EventContext);
+    const { events, allEvents } = useContext(EventContext);
 
     const [formData, setFormData] = useState<EventCreateData>({
         title: '',
         creator: user_id, // Assuming user_id is the creator ID
         description: '',
-        expiration_time: '',
+        expired_at: '',
         invites: [],
     });
 
@@ -74,8 +74,8 @@ const EventForm: React.FC = () => {
         e.preventDefault();
         try {
             await EventService.createEvent(formData);
-            updateEvents()
-            history.push('/events'); // Redirect to the events page
+            allEvents()
+            history.push('/events/'); // Redirect to the events page
             
 
         } catch (error) {
@@ -100,9 +100,9 @@ const EventForm: React.FC = () => {
                             </div>
                             <div className="form-group"> {/* Apply form-group class for styling */}
                                 <p  className='form-name-label'>Data di scadenza:</p >
-                                <input type="datetime-local" name="expiration_time" value={formData.expiration_time} onChange={handleInputChange} />
+                                <input type="datetime-local" name="expired_at" value={formData.expired_at} onChange={handleInputChange} />
                             </div>
-                            <button type="submit" className="create-event-btn"><b>Invita i tuoi Amici</b></button>
+                            <button type="submit"><b>Invita i tuoi Amici</b></button>
                         </form>
                     </>
                 ) : (
@@ -124,7 +124,7 @@ const EventForm: React.FC = () => {
                                         ))}
                                     </ul>
                                 </div>
-                                <button type="submit" className="create-event-btn">Create Event</button> {/* Use the existing button style */}
+                                <button type="submit">Create Event</button> {/* Use the existing button style */}
                             </form>
                         </div>
                     </>

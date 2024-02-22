@@ -1,0 +1,23 @@
+.top-navigation {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+}
+
+.top-navigation-tab {
+  cursor: pointer;
+  padding: 10px 20px;
+  transition: background-color 0.3s ease;
+  border-radius: 20px;
+  background-color: #333;
+}
+
+.top-navigation-tab:hover {
+  background-color: #f0f0f0;
+}
+
+.top-navigation-tab.active {
+  background-color: #005ec3;
+  color: #fff;
+}

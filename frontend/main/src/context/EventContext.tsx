@@ -32,11 +32,21 @@ import EventService, { EventDetailsData } from '../services/EventService';
 // Define the shape of the event context data
 interface EventContextData {
     events: EventDetailsData[];
-    updateEvents: () => void; // Function to update events
+    allEvents: () => void;
+    openEvents: () => void;
+    pastEvents: () => void;
+    hostEvents: (host_id: string) => void;
 }
 
 // Create the event context
-const EventContext = createContext<EventContextData>({ events: [], updateEvents: () => { } });
+const EventContext = createContext<EventContextData>({
+    events: [],
+    allEvents: () => { },
+    openEvents: () => { },
+    pastEvents: () => { },
+    hostEvents: () => { }
+});
+
 export default EventContext;
 
 // EventProvider component to manage event-related data
@@ -46,13 +56,13 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     // useEffect to fetch events on component mount
     useEffect(() => {
-        fetchEvents();
+        allEvents();
     }, []);
 
-    // Function to fetch events from the backend
-    const fetchEvents = async () => {
+    // Function to update events
+    const allEvents = async () => {
         try {
-            const fetchedEvents = await EventService.getEvents();
+            const fetchedEvents = await EventService.getAllEvents();
             setEvents(fetchedEvents);
         } catch (error) {
             console.error('Error fetching events:', error);
@@ -60,18 +70,40 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     };
 
     // Function to update events
-    const updateEvents = async () => {
+    const openEvents = async () => {
         try {
-            await fetchEvents(); // Fetch fresh events
+            const fetchedEvents = await EventService.getOpenEvents();
+            setEvents(fetchedEvents);
         } catch (error) {
-            console.error('Error updating events:', error);
+            console.error('Error fetching events:', error);
         }
     };
+
+    const pastEvents = async () => {
+        try {
+            const fetchedEvents = await EventService.getPastEvents();
+            setEvents(fetchedEvents);
+        } catch (error) {
+            console.error('Error fetching events:', error);
+        }
+    }
+
+    const hostEvents = async (host_id : string) => {
+        try {
+            const fetchedEvents = await EventService.getHostEvents(host_id);
+            setEvents(fetchedEvents);
+        } catch (error) {
+            console.error('Error fetching events:', error);
+        }
+    }
 
     // Value object to be provided to components consuming this context
     const contextValue: EventContextData = {
         events,
-        updateEvents,
+        allEvents,
+        openEvents,
+        pastEvents,
+        hostEvents
     };
 
     // Provide the context value to its children components

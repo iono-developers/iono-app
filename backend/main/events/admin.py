@@ -8,13 +8,13 @@ class InviteInline(admin.TabularInline):  # You can also use admin.StackedInline
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
-    list_display = ('title', 'creator', 'expiration_time', 'created_at')
+    list_display = ('id', 'title', 'creator', 'expired_at', 'created_at')
     search_fields = ('title', 'creator__username')
     inlines = [InviteInline]
 
 @admin.register(Invite)
 class InviteAdmin(admin.ModelAdmin):
-    list_display = ('event', 'invitee', 'rejected', 'rejected_at')
+    list_display = ('id', 'event', 'invitee', 'rejected', 'rejected_at')
     search_fields = ('event__title', 'invitee__username')
 
 @admin.register(Loser)

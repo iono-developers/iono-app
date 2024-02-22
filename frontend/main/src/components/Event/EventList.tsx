@@ -25,7 +25,7 @@ import '../../styles/main.scss'; // Importa il file SCSS modificato
 
 import EventMini from './EventMini';
 import EventContext from '../../context/EventContext';
-import ActionsBar from './ActionsBar';
+import EventNav from './EventsNav';
 
 interface EventListProps { }
 
@@ -35,9 +35,8 @@ const EventList: React.FC<EventListProps> = () => {
 
   return (
     <div>
-      <ActionsBar />
+      <EventNav />
       <div className="event-list-container">
-        <h2 className="event-list-title">Le Ultime Sfide</h2>
         <div className="event-list-wrapper">
           {events.length === 0 ? (
             <p>No events available.</p>

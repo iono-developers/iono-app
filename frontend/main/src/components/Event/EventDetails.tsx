@@ -14,7 +14,7 @@ const EventDetails: React.FC = () => {
   const { eventId } = useParams<{ eventId: string }>();
 
   // Access the authentication context to check if the user is authenticated
-  const { username } = useAuth() as AuthContextData;
+  const { user_id, username } = useAuth() as AuthContextData;
 
   // State to store the details of the event
   const [eventDetails, setEventDetails] = useState<EventDetailsData | null>(null);
@@ -44,8 +44,20 @@ const EventDetails: React.FC = () => {
   // Handle user response to the event invitation
   const handleRespond = async (response: 'accept' | 'decline') => {
     try {
+      const response = {
+        'event': eventId,
+        'invitee': user_id
+      }
+
       // Call the EventService to respond to the event invitation
-      await EventService.respondToInvite(eventId, response);
+      await EventService.refuseEvent(response);
+
+      // Fetch the updated event details from the server
+      const updatedEvent = await EventService.getEventDetails(eventId);
+
+      // Update the local state with the updated event details
+      setEventDetails(updatedEvent);
+
       // Handle the response, e.g., update local state or trigger a refresh
     } catch (error) {
       console.error('Error responding to invite:', error);
@@ -70,6 +82,9 @@ const EventDetails: React.FC = () => {
   if (loading) {
     return <Loading />;
   }
+
+  // Check if the current user is invited to the event
+  const currentUserInvite = eventDetails?.invites.find(invite => invite.invitee.username === username);
 
   // Render the event details along with buttons for user response
   return (
@@ -105,7 +120,12 @@ const EventDetails: React.FC = () => {
         </table>
       </div>
 
-      <div className="user-response-section">{/* User response handling */}</div>
+      <div className="user-response-section">
+        {/* Renderizza il pulsante solo se l'utente corrente è invitato */}
+        {currentUserInvite && !currentUserInvite.rejected &&  (
+          <button className='iono' onClick={() => handleRespond('decline')}><b>🗨️ Io No!</b></button>
+        )}
+      </div>
     </div>
   );
 };

@@ -7,19 +7,20 @@ import EventDetails from './components/Event/EventDetails';
 import EventList from './components/Event/EventList';
 import EventForm from './components/Event/EventForm';
 import User from './components/Users/User';
+import BottomNav from './components/Nav/BottomNav';
 
 function App() {
   return (
     <div className="App">
       <Router>
         <AuthProvider>
-          <EventProvider>
-            <Switch>
+          <Switch>
 
-              <Route path="/login">
-                <Login />
-              </Route>
+            <Route path="/login">
+              <Login />
+            </Route>
 
+            <EventProvider>
               <PrivateRoute>
                 <Route exact path='/events/'>
                   <EventList />
@@ -30,16 +31,21 @@ function App() {
                 <Route exact path='/users/:userId'>
                   <User />
                 </Route>
-                <Route exact path='/create'>
+                <Route exact path='/users/'>
+                  <User />
+                </Route>
+                <Route exact path='/create/'>
                   <EventForm />
                 </Route>
                 <Route exact path='/events/:eventId'>
                   <EventDetails />
                 </Route>
+                <BottomNav />
               </PrivateRoute>
+            </EventProvider>
 
-            </Switch>
-          </EventProvider>
+          </Switch>
+
         </AuthProvider>
       </Router>
     </div>
