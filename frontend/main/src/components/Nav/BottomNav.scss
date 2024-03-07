@@ -2,7 +2,7 @@
   position: fixed;
   bottom: 0;
   left: 0;
-  width: 100%;
+  width: 100%; 
   background-color: #1d1d1d;
   display: flex;
   justify-content: space-around;
@@ -28,4 +28,8 @@
 .bottom-navigation-tab.active {
   background-color: #007bff;
   color: #fff;
+}
+
+.app {
+  padding-bottom: 60px; /* Adjust the value based on the height of your bottom navigation bar */
 }

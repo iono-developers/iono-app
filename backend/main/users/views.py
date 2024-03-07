@@ -1,16 +1,44 @@
-# views.py
+from .models import FriendRequest
+from .serializers import FriendRequestSerializer, UsersSerializer, ProfileUsersSerializer
 
 from rest_framework import viewsets, status
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import get_object_or_404
-from .models import FriendRequest
-from .serializers import FriendRequestSerializer, UsersSerializer
 from django.contrib.auth import get_user_model
 
 
-class UsersViewSet(viewsets.ModelViewSet):
+
+class UsersViewSet(viewsets.ViewSet):
     queryset = get_user_model().objects.all()
-    serializer_class = UsersSerializer
+    serializer_class = ProfileUsersSerializer
+
+    def list(self, request):
+        serializer = UsersSerializer(self.queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        user = get_user_model().objects.get(username=pk)
+        serializer = ProfileUsersSerializer(user)
+        return Response(serializer.data)
+
+
+@api_view(['POST'])
+def change_emoji(request):
+    if request.method == 'POST':
+        emoji = request.data.get('emoji')
+        if not emoji:
+            return Response({'error': 'Emoji not provided'}, status=400)
+
+        username = request.data.get('username')
+        user = get_user_model().objects.filter(username=username).first()
+        user.emoji = emoji
+        user.save()
+        
+        return Response('ok', status=200)
+
+
 
 class FriendRequestViewSet(viewsets.ModelViewSet):
     queryset = FriendRequest.objects.all()

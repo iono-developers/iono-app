@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useContext } from 'react';
 
 import EventService, { EventCreateData } from '../../services/EventService';
-import UserService, { UserData } from '../../services/UsersService';
+import UserService, { MiniUserData } from '../../services/UsersService';
 import { useAuth } from '../../context/AuthContext';
 import EventContext from '../../context/EventContext';
 
@@ -22,7 +22,7 @@ const EventForm: React.FC = () => {
         invites: [],
     });
 
-    const [users, setUsers] = useState<UserData[]>([]);
+    const [users, setUsers] = useState<MiniUserData[]>([]);
     const [showInviteFriends, setShowInviteFriends] = useState<boolean>(false); // State to toggle between event creation and inviting friends phases
 
     useEffect(() => {

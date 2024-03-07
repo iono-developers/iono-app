@@ -6,7 +6,7 @@ import PrivateRoute from './utils/PrivateRoute';
 import EventDetails from './components/Event/EventDetails';
 import EventList from './components/Event/EventList';
 import EventForm from './components/Event/EventForm';
-import User from './components/Users/User';
+import UserProfile from './components/Users/User';
 import BottomNav from './components/Nav/BottomNav';
 
 function App() {
@@ -28,16 +28,13 @@ function App() {
                 <Route exact path='/'>
                   <EventList />
                 </Route>
-                <Route exact path='/users/:userId'>
-                  <User />
-                </Route>
-                <Route exact path='/users/'>
-                  <User />
+                <Route exact path='/user/:usernameLink/'>
+                  <UserProfile />
                 </Route>
                 <Route exact path='/create/'>
                   <EventForm />
                 </Route>
-                <Route exact path='/events/:eventId'>
+                <Route exact path='/events/:eventId/'>
                   <EventDetails />
                 </Route>
                 <BottomNav />

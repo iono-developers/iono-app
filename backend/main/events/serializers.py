@@ -4,6 +4,7 @@ from users.serializers import UsersSerializer
 from users.models import User
 from .utils import format_datetime
 from datetime import datetime
+from .mail.mail import send
 
 
 class InviteSerializer(serializers.ModelSerializer):
@@ -79,6 +80,16 @@ class EventCreateSerializer(serializers.ModelSerializer):
         event = Event.objects.create(**validated_data)
         for invitee in invites_data:
             Invite.objects.create(event=event, invitee=invitee)
+        
+        # Construct the URL for the event
+        print(self.context['request'].META['HTTP_HOST'])
+        event_url = f"{self.context['request'].META['HTTP_HOST'].split(':')}/events/{event.id}"
+        
+        # Send email to invitees
+        send(f'{event.creator.username} ti ha sfidato!',
+             f'Per rispondere vai qui {event_url}',
+             [invitee.email for invitee in invites_data])
+        
         return event
 
 class LoserSerializer(serializers.ModelSerializer):

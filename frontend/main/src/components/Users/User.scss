@@ -1,0 +1,82 @@
+/* User page styles */
+.user-page-container {
+  margin: 40px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  color: #bbb;
+}
+
+.user-emoji {
+  font-size: 9rem;
+  width: 180px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: #555;
+  border: 10px solid rgb(210, 210, 210);
+  cursor: pointer;
+}
+
+
+.text-infos {
+  margin: 30px;
+  text-align: center;
+
+  h1 {
+    font-size: 45px;
+    margin: 0px;
+    color: white;
+  }
+
+  p {
+    font-style: italic;
+  }
+}
+
+.emoji-menu {
+  position: relative;
+
+  .selected-emoji {
+    cursor: pointer;
+    /* Add your styles for the selected emoji display */
+  }
+
+  .emoji-list {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    max-height: 250px;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: repeat(5, 50px);
+    grid-auto-rows: 50px;
+    gap: 10px;
+    background-color: #3e3e3e;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0px 10px rgba(0, 0, 0, 0.5);
+    z-index: 10;
+  }
+
+  .emoji-item {
+    font-size: 2.5rem;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: scale(1.5);
+    }
+  }
+
+  &.open {
+    .emoji-list {
+      display: grid;
+      /* Show the emoji list when menu is open */
+    }
+  }
+}

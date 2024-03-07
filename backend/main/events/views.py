@@ -7,7 +7,6 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 
 
-
 class EventCreateView(generics.CreateAPIView):
     # queryset = Event.objects.all()
     serializer_class = EventCreateSerializer
@@ -19,7 +18,6 @@ class AllEventsView(generics.ListCreateAPIView):
     
     def get_queryset(self):
         return Event.objects.all().order_by('-created_at')
-
 
 class OpenEventsListView(generics.ListCreateAPIView):
     queryset = Event.objects.all()
@@ -34,7 +32,6 @@ class PastEventsListView(generics.ListAPIView):
     
     def get_queryset(self):
         return Event.objects.filter(expired_at__lte=timezone.now()).order_by('-expired_at')
-
 
 class HostEventsListView(generics.ListAPIView):
     serializer_class = EventSerializer
