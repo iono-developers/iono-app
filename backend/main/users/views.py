@@ -1,13 +1,15 @@
 from .models import FriendRequest
-from .serializers import FriendRequestSerializer, UsersSerializer, ProfileUsersSerializer
+from .serializers import (
+        FriendRequestSerializer,
+        UsersSerializer, 
+        ProfileUsersSerializer,
+)
 
 from rest_framework import viewsets, status
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import get_object_or_404
 from django.contrib.auth import get_user_model
-
 
 
 class UsersViewSet(viewsets.ViewSet):
@@ -23,7 +25,6 @@ class UsersViewSet(viewsets.ViewSet):
         serializer = ProfileUsersSerializer(user)
         return Response(serializer.data)
 
-
 @api_view(['POST'])
 def change_emoji(request):
     if request.method == 'POST':
@@ -38,8 +39,7 @@ def change_emoji(request):
         
         return Response('ok', status=200)
 
-
-
+# TODO: does it works?
 class FriendRequestViewSet(viewsets.ModelViewSet):
     queryset = FriendRequest.objects.all()
     serializer_class = FriendRequestSerializer

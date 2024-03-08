@@ -1,42 +1,14 @@
-/**
- * EventService Module:
- * 
- * This module handles communication with the backend server regarding events.
- * It encapsulates functions for retrieving event details, fetching the list of
- * events, creating new events, and responding to event invitations.
- * 
- * Useful for:
- * - Making HTTP requests to the server's '/events' endpoints for event-related operations.
- * - Handling asynchronous operations related to events in a React application.
- * - Encapsulating backend communication logic to keep it separate from components.
- * 
- * When to use:
- * - Integrate this EventService module in components or services where you need
- *   to interact with the server's '/events' endpoints for CRUD operations on events.
- * - Ideal for applications with a backend that supports event-related operations.
- * 
- * Function Usage Comments:
- * - getEventDetails: Retrieves details of a specific event by sending a GET request
- *   to the '/events/:eventId' endpoint. Requires the eventId as a parameter.
- * - getEvents: Retrieves the list of events by sending a GET request to the '/events' endpoint.
- * - createEvent: Creates a new event by sending a POST request to the '/events' endpoint.
- *   Requires eventData, containing the details of the new event, as a parameter.
- * - respondToInvite: Responds to an event invitation by sending a POST request to the
- *   '/events/:eventId/respond' endpoint. Requires eventId and response as parameters.
- * - Exported as EventService: The entire EventService object is exported for use
- *   in other parts of the application.
- */
-
-
 import { get, post } from '../utils/api';
 import { UserData } from './UsersService';
 
 
+
+// Interface for creating a new event
 export interface EventCreateData {
   title: string;
   creator: string | null;
   description: string;
-  expired_at: string,
+  expired_at: string;
   invites: string[];
 }
 
@@ -48,132 +20,104 @@ export interface EventInviteData {
   rejected_date: string;
 }
 
+// Interface for event details
 export interface EventDetailsData {
   id: string;
   title: string;
   creator: UserData;
   description: string;
-  creation_date: string,
-  creation_time: string,
-  expiration_date: string,
-  expiration_time: string,
+  creation_ago: string;
+  expiration_date: string;
+  expiration_time: string;
   invites: EventInviteData[];
 }
 
-export interface RefuseEventData{
-  event: string,
-  invitee: string,
-}
-
-interface ResponseData {
-  // Define the structure of response data from the server as needed
+// Interface for refusing an event invitation
+export interface RefuseEventData {
+  event: string;
+  invitee: string;
 }
 
 const EventService = {
-  // Function to retrieve a single event from the backend.
+  // Function to retrieve a single event from the backend
   getEventDetails: async (eventId: string): Promise<EventDetailsData> => {
     try {
-      // Send a GET request to the '/events' endpoint.
-      const response = await get<EventDetailsData>(`/events/${eventId}/`);
-      // Return the data received from the server.
+      const response = await get<EventDetailsData>(`/event/${eventId}/`);
       return response.data;
     } catch (error: any) {
-      // If an error occurs, throw the server response data or the error message.
       throw error.response ? error.response.data : error.message;
     }
   },
 
-  // Function to retrieve the list of events from the backend.
+  // Function to retrieve the list of all events from the backend
   getAllEvents: async (): Promise<EventDetailsData[]> => {
     try {
-      // Send a GET request to the '/events' endpoint.
-      const response = await get<EventDetailsData[]>('/events/all/');
-      // Return the data received from the server.
+      const response = await get<EventDetailsData[]>('/events/');
       return response.data;
     } catch (error: any) {
-      // If an error occurs, throw the server response data or the error message.
       throw error.response ? error.response.data : error.message;
     }
   },
 
-  // Function to retrieve events close to the end from the backend.
+  // Function to retrieve open events from the backend
   getOpenEvents: async (): Promise<EventDetailsData[]> => {
     try {
-      // Send a GET request to the '/events' endpoint.
       const response = await get<EventDetailsData[]>('/events/open/');
-      // Return the data received from the server.
       return response.data;
     } catch (error: any) {
-      // If an error occurs, throw the server response data or the error message.
       throw error.response ? error.response.data : error.message;
     }
   },
 
-  // Function to retrieve events expired from the backend.
+  // Function to retrieve past events from the backend
   getPastEvents: async (): Promise<EventDetailsData[]> => {
     try {
-      // Send a GET request to the '/events' endpoint.
       const response = await get<EventDetailsData[]>('/events/past/');
-      // Return the data received from the server.
       return response.data;
     } catch (error: any) {
-      // If an error occurs, throw the server response data or the error message.
       throw error.response ? error.response.data : error.message;
     }
   },
 
-  // Function to retrieve events associated with a particular host from the backend.
+  // Function to retrieve events associated with a particular host from the backend
   getHostEvents: async (host: string): Promise<EventDetailsData[]> => {
     try {
-      // Send a GET request to the '/events' endpoint.
       const response = await get<EventDetailsData[]>(`/events/host/${host}/`);
-      // Return the data received from the server.
       return response.data;
     } catch (error: any) {
-      // If an error occurs, throw the server response data or the error message.
       throw error.response ? error.response.data : error.message;
     }
   },
 
-  // Function to create a new event by sending a POST request to the '/events' endpoint.
+  // Function to create a new event
   createEvent: async (eventData: any): Promise<EventDetailsData> => {
     try {
-      // Send a POST request to the '/events' endpoint with the provided event data.
-      const response = await post<EventDetailsData>('/events/create/', eventData);
-      // Return the data received from the server, typically containing the newly created event details.
+      const response = await post<EventDetailsData>('/event/create/', eventData);
       return response.data;
     } catch (error: any) {
-      // If an error occurs, throw the server response data or the error message.
       throw error.response ? error.response.data : error.message;
     }
   },
 
-  // Function to refuse an existing event by sending a POST request to the '/events/iono' endpoint.
+  // Function to refuse an existing event
   refuseEvent: async (eventData: any): Promise<RefuseEventData> => {
     try {
-      // Send a POST request to the '/events' endpoint with the provided event data.
-      const response = await post<RefuseEventData>('/events/iono/', eventData);
-      // Return the data received from the server, typically containing the newly created event details.
+      const response = await post<RefuseEventData>('/event/iono/', eventData);
       return response.data;
     } catch (error: any) {
-      // If an error occurs, throw the server response data or the error message.
       throw error.response ? error.response.data : error.message;
     }
   },
 
-  // Function to respond to an event invitation by sending a POST request to the '/events/:eventId/respond' endpoint.
-  respondToInvite: async (eventId: string, response: any): Promise<ResponseData> => {
+  // Function to respond to an event invitation
+  respondToInvite: async (eventId: string, response: any): Promise<EventDetailsData> => {
     try {
-      // Send a POST request to the specific event's 'respond' endpoint with the response data.
-      const inviteResponse = await post<ResponseData>(`/events/${eventId}/respond`, { response });
-      // Return the data received from the server, usually indicating a successful response.
+      const inviteResponse = await post<EventDetailsData>(`/events/${eventId}/respond`, { response });
       return inviteResponse.data;
     } catch (error: any) {
-      // If an error occurs, throw the server response data or the error message.
       throw error.response ? error.response.data : error.message;
     }
   },
 };
 
-// Export the EventService object to be used in other parts of the application.
 export default EventService;

@@ -34,7 +34,7 @@ function App() {
                 <Route exact path='/create/'>
                   <EventForm />
                 </Route>
-                <Route exact path='/events/:eventId/'>
+                <Route exact path='/event/:eventId/'>
                   <EventDetails />
                 </Route>
                 <BottomNav />

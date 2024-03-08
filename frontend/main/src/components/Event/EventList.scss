@@ -1,0 +1,27 @@
+.event-list-container {
+    text-align: center;
+  }
+  
+  .event-list-title {
+    color: #fff;
+    font-size: 24px;
+    margin: 20px;
+  }
+  
+  .event-list-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    margin-top: 15px;
+  }
+  
+  .event-list-wrapper ul {
+    list-style-type: none;
+    padding: 0;
+    flex-direction: column;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+  
+  .event-list-wrapper ul li
+  {width: 100%;}
