@@ -7,9 +7,10 @@ italian_month_names = {
 }
 
 def format_datetime(datetime_obj):
-    if datetime_obj:
-        return {
-            'date': datetime.strftime(datetime_obj, '%d') + ' ' + italian_month_names[datetime_obj.month] + ' ' + datetime.strftime(datetime_obj, '%Y'),
-            'time': datetime.strftime(datetime_obj, '%H:%M')
-        }
-    return {'date' : None, 'time' : None}
+    if not datetime_obj:
+        return {'date': None, 'time': None}
+    
+    formatted_date = datetime.strftime(datetime_obj, '%d %B %Y')
+    formatted_time = datetime.strftime(datetime_obj, '%H:%M')
+    
+    return {'date': formatted_date, 'time': formatted_time}
