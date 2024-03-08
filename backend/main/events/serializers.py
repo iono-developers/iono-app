@@ -1,5 +1,5 @@
 from .models import Event, Invite, Loser
-from .utils import format_datetime
+from .utils import format_date, format_time, format_how_long_ago
 from .mail.mail import send
 from users.serializers import UsersSerializer
 from users.models import User
@@ -18,10 +18,10 @@ class InviteSerializer(serializers.ModelSerializer):
         fields = ['invitee', 'rejected', 'rejected_date', 'rejected_time']
         
     def get_rejected_date(self, obj):
-        return format_datetime(obj.rejected_at)['date']
+        return format_date(obj.rejected_at)
 
     def get_rejected_time(self, obj):
-        return format_datetime(obj.rejected_at)['time']
+        return format_time(obj.rejected_at)
 
 class RefuseInviteSerializer(serializers.ModelSerializer):
     event = serializers.PrimaryKeyRelatedField(queryset=Event.objects.all())
@@ -48,20 +48,17 @@ class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = ['id', 'title', 'description', 'invites',
-                  'creator', 'creation_date', 'creation_time',
-                  'expiration_date', 'expiration_time']
+                  'creator', 'creation_ago', 'expiration_date',
+                  'expiration_time']
 
-    def get_creation_date(self, obj):
-        return format_datetime(obj.created_at)['date']
-
-    def get_creation_time(self, obj):
-        return format_datetime(obj.created_at)['time']
+    def get_creation_ago(self, obj):
+        return format_how_long_ago(obj.created_at)
 
     def get_expiration_date(self, obj):
-        return format_datetime(obj.expired_at)['date']
+        return format_time(obj.expired_at)
 
     def get_expiration_time(self, obj):
-        return format_datetime(obj.expired_at)['time']
+        return format_date(obj.expired_at)
     
     def to_representation(self, instance):
         data = super().to_representation(instance)
