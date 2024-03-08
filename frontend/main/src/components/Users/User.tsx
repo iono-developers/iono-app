@@ -28,7 +28,7 @@ const UserProfile: React.FC = () => {
   }, [usernameLink]);
 
   const handleEmojiClick = () => {
-    if (username == usernameLink) {
+    if (username === usernameLink) {
       setEditingEmoji(true);
     }
   };
