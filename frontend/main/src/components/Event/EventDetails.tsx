@@ -3,6 +3,7 @@ import { useAuth, AuthContextData } from '../../context/AuthContext';
 import Loading from '../Utils/Loading';
 
 import './EventDetails.scss'
+import '../../styles/main.scss'
 
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';

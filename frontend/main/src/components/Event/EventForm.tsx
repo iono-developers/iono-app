@@ -7,7 +7,8 @@ import UserService, { MiniUserData } from '../../services/UsersService';
 import { useAuth } from '../../context/AuthContext';
 import EventContext from '../../context/EventContext';
 
-import '../../styles/main.scss'; // Import the main SCSS file for global styles
+import '../../styles/main.scss';
+import './EventForm.scss'
 
 const EventForm: React.FC = () => {
     const history = useHistory();
