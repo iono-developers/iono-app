@@ -42,23 +42,31 @@ class EventSerializer(serializers.ModelSerializer):
     creator = UsersSerializer()
     creation_date = serializers.SerializerMethodField()
     creation_time = serializers.SerializerMethodField()
+    creation_ago = serializers.SerializerMethodField()
     expiration_date = serializers.SerializerMethodField()
     expiration_time = serializers.SerializerMethodField()
 
     class Meta:
         model = Event
         fields = ['id', 'title', 'description', 'invites',
-                  'creator', 'creation_ago', 'expiration_date',
+                  'creator', 'creation_date', 'creation_time',
+                  'creation_ago', 'expiration_date',
                   'expiration_time']
 
     def get_creation_ago(self, obj):
         return format_how_long_ago(obj.created_at)
+    
+    def get_creation_time(self, obj):
+        return format_time(obj.created_at)
+    
+    def get_creation_date(self, obj):
+        return format_date(obj.created_at)
 
     def get_expiration_date(self, obj):
-        return format_time(obj.expired_at)
+        return format_date(obj.expired_at)
 
     def get_expiration_time(self, obj):
-        return format_date(obj.expired_at)
+        return format_time(obj.expired_at)
     
     def to_representation(self, instance):
         data = super().to_representation(instance)
