@@ -53,9 +53,8 @@ input, textarea {
 
 // Add styling to links
 a {
-  color: #007bff;
+  color: #005ec3;
   text-decoration: none;
-
   &:hover {
     text-decoration: underline;
   }
@@ -166,64 +165,6 @@ a {
   padding: 10px 16px;
   border-radius: 4px;
   cursor: pointer;
-}
-
-/* Event Details */
-
-.event-details-container {
-  background-color: #333;
-  padding: 20px;
-  border-radius: 8px;
-  text-align: center; // Center align the content
-}
-
-.event-details-container h2 {
-  font-size: 24px;
-  margin-bottom: 15px;
-}
-
-.details-event-description {
-  margin: 20px auto;
-}
-
-.event-header p {
-  margin-bottom: 10px;
-}
-
-.event-description {
-  color: #fff;
-  margin-bottom: 20px;
-}
-
-.event-description p {
-  margin-bottom: 10px;
-}
-
-.invitations-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-
-  th,
-  td {
-    padding: 10px;
-    border-top: 2px solid #ddd;
-    border-bottom: 2px solid #ddd;
-    text-align: center; /* Center align text within cells */
-    font-size: 16px;
-  }
-
-  th {
-    color: #fff; /* Light text color for header */
-  }
-
-  .pending {
-    background-color: #941616; /* Dark background color for pending status */
-  }
-
-  td span {
-    color: #fff; /* Light text color for status */
-  }
 }
 
 

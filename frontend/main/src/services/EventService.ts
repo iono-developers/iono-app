@@ -26,8 +26,7 @@ export interface EventDetailsData {
   title: string;
   creator: UserData;
   description: string;
-  creation_date: string;
-  creation_time: string;
+  creation_ago: string;
   expiration_date: string;
   expiration_time: string;
   invites: EventInviteData[];
@@ -43,7 +42,7 @@ const EventService = {
   // Function to retrieve a single event from the backend
   getEventDetails: async (eventId: string): Promise<EventDetailsData> => {
     try {
-      const response = await get<EventDetailsData>(`/events/${eventId}/`);
+      const response = await get<EventDetailsData>(`/event/${eventId}/`);
       return response.data;
     } catch (error: any) {
       throw error.response ? error.response.data : error.message;
@@ -53,7 +52,7 @@ const EventService = {
   // Function to retrieve the list of all events from the backend
   getAllEvents: async (): Promise<EventDetailsData[]> => {
     try {
-      const response = await get<EventDetailsData[]>('/events/all/');
+      const response = await get<EventDetailsData[]>('/events/');
       return response.data;
     } catch (error: any) {
       throw error.response ? error.response.data : error.message;
@@ -93,7 +92,7 @@ const EventService = {
   // Function to create a new event
   createEvent: async (eventData: any): Promise<EventDetailsData> => {
     try {
-      const response = await post<EventDetailsData>('/events/create/', eventData);
+      const response = await post<EventDetailsData>('/event/create/', eventData);
       return response.data;
     } catch (error: any) {
       throw error.response ? error.response.data : error.message;
@@ -103,7 +102,7 @@ const EventService = {
   // Function to refuse an existing event
   refuseEvent: async (eventData: any): Promise<RefuseEventData> => {
     try {
-      const response = await post<RefuseEventData>('/events/iono/', eventData);
+      const response = await post<RefuseEventData>('/event/iono/', eventData);
       return response.data;
     } catch (error: any) {
       throw error.response ? error.response.data : error.message;

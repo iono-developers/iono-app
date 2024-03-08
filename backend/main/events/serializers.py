@@ -18,7 +18,7 @@ class InviteSerializer(serializers.ModelSerializer):
         fields = ['invitee', 'rejected', 'rejected_date', 'rejected_time']
         
     def get_rejected_date(self, obj):
-        return format_date(obj.rejected_at)
+        return format_date(obj.rejected_at, format_type='short')
 
     def get_rejected_time(self, obj):
         return format_time(obj.rejected_at)
