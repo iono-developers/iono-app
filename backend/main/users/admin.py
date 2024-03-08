@@ -1,7 +1,6 @@
-# admin.py
+from .models import FriendRequest
 
 from django.contrib import admin
-from .models import FriendRequest
 
 
 class FriendRequestAdmin(admin.ModelAdmin):
